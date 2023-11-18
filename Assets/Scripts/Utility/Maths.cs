@@ -7,7 +7,7 @@ using Unity;
 
 public static class Maths //Maybe have Maths as namespace, then classes for e.g. number generation ect ect
 {
-    //Create instance of C# random class for us to use (Would use Unit equiv but I wan't to handle this in a static class for abstraction, hence no inheriting from monobehaviour)
+    //Create instance of C# random class for us to use (Would use Unit equiv but I wan't to handle this in a static class for abstraction, hence no inheriting from monobehaviour, could do some monobehaviour injection, but this method should be fine!)
     private static Random random = new Random();
 
     private static Vector2 cachedBoundsX; //Will be used to cache bounds for generating random co-ords
@@ -30,7 +30,7 @@ public static class Maths //Maybe have Maths as namespace, then classes for e.g.
         double rangeY = maxY - minY;
         double rangeZ = maxZ - minZ;
 
-        //Calculate our random points based off cached bounds
+        //Calculate random points based off cached bounds
         double sample = random.NextDouble();
         double scaledX = (sample * rangeX) + minX;
         double scaledY = (sample * rangeY) + minY;
@@ -73,6 +73,13 @@ public static class Maths //Maybe have Maths as namespace, then classes for e.g.
 
         return randomPoint;
 
+    }
+
+    public static int CalculateBirdShotScore(float timeOnScreen,float speed)
+    {
+        int score = (int)((1 * speed) - timeOnScreen);
+
+        return score;
     }
 
     public static void SetBounds(Vector2 x, Vector2 y, Vector2 z) //Cached bounds done on scene or game start, x will represent min and y will represent max value for each bounds param

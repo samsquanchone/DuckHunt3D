@@ -23,13 +23,16 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
     [SerializeField] private int birdCount = 0; //For checking how many birds have been spawned this round
 
     [SerializeField] private UnityEvent flyBirdAway;
-    
-   
+    [SerializeField] private List<UnityEvent> uiEventList = new(); //Just used for proof of concept hope to move this into a broadcast manager for better architecture! Index note: 0 reset ammo UI, 1 increment duck count, 2 reset duck count
+
+
     private void Start()
     {
         GameManager.Instance.AddPlayerObserver(this);
-        CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager!
+        CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }
+
+   
 
     public void BirdHit()
     {
@@ -54,16 +57,20 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
     {
         //If bird count is max in a round then check results, else spawn another bird!
         if (birdCount == 10)
+        {
             RoundResults();
+        }
         else
-            birdCount += 1;
+        {
             SpawnManager.Instance.SpawnBird();
+            birdCount += 1;
+            uiEventList[1].Invoke();
+        }
     }
 
     private void CheckAmmo()
     {
         if (shots == 0)
-
         {
             flyBirdAway.Invoke();
             ResetAmmo();
@@ -72,14 +79,17 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
 
     private void ResetAmmo()
     {
-           shots = 3;
+        shots = 3;
+        uiEventList[0].Invoke();
     }
 
     private void RoundResults()
     {
-        if (birdsHit == birdsNeeded)
+        if (birdsHit >= birdsNeeded)
             //Increment round here
             NewRound();
+        else
+            GameManager.Instance.GameOver();
     }
 
     private void NewRound()
@@ -87,7 +97,9 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         //Calculate birds needed for this round!
         birdsHit = 0;
         birdCount = 0;
+        uiEventList[2].Invoke();
         ResetAmmo();
+        uiEventList[3].Invoke();
         CheckCount(); //saves us needing to repeat the call to the spawn manager!
 
     }

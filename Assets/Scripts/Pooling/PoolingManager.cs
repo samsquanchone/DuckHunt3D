@@ -17,7 +17,7 @@ public class PoolingManager : MonoBehaviour
 
     public List<PoolInfo> listOfPool;
 
-    private Vector3 defaultPos = new Vector3(-100, -100, -100);
+    private Vector3 defaultPos = new Vector3(0, 0, 0);
 
 
 
@@ -39,6 +39,7 @@ public class PoolingManager : MonoBehaviour
         {
             GameObject objInstance = null;
             objInstance = Instantiate(info.prefab, info.container.transform);
+            objInstance.GetComponent<Duck>().Innit(); //Used to intialise anything we need before set to not active a.k.a a custom start function!
             objInstance.gameObject.SetActive(false);
             objInstance.transform.position = defaultPos;
             info.pool.Add(objInstance);

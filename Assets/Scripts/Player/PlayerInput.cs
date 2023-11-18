@@ -25,7 +25,16 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
     // Start is called before the first frame update
     void Start()
     {
-        playerObservers = new(GameManager.Instance.GetPlayerObservers()); //Set up observer list, currently everything is j on start and end observer wise, but can modify if observer lifecycle needs to be more dynamic!
+
+        //playerObservers = new(GameManager.Instance.GetPlayerObservers()); //Set up observer list, currently everything is j on start and end observer wise, but can modify if observer lifecycle needs to be more dynamic!
+        StartCoroutine("LateStart");
+    }
+
+    //Cheesy fix for now as Unity changed order of execution when i last built game. Should sort out order of execution in player settings!;
+    IEnumerator LateStart()
+    {
+        yield return new WaitForSeconds(0.2f);
+        playerObservers = new(GameManager.Instance.GetPlayerObservers());
     }
 
     // Update is called once per frame
@@ -46,8 +55,9 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
                     if (hit.collider.CompareTag("Duck"))
                     {
                         Debug.Log("Duck Hit");
+                        this.NotifyObservers(PlayerState.DUCK_SHOT);
                         PoolingManager.Instance.CoolObject(hit.collider.gameObject, PoolingObjectType.DUCK); //Could you observer pattern here, but we have the gameobject to return to pool, so let's not overcomplicate it and can just use the singleton!
-                        NotifyObservers(PlayerState.DUCK_SHOT);
+                        
                     }
                     else
                     {

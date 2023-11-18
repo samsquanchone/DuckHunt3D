@@ -45,4 +45,6 @@ public class SpawnManager : MonoBehaviour
         despawnBird.Invoke();
     }
 
+    
+
 }
