@@ -7,7 +7,7 @@ using Unity;
 
 public static class Maths //Maybe have Maths as namespace, then classes for e.g. number generation ect ect
 {
-    //Create instance of C# random class for us to use (Would use Unit equiv but I wan't to handle this in a static class for abstraction, hence no inheriting from monobehaviour)
+    //Create instance of C# random class for us to use (Would use Unit equiv but I wan't to handle this in a static class for abstraction, hence no inheriting from monobehaviour, could do some monobehaviour injection, but this method should be fine!)
     private static Random random = new Random();
 
     private static Vector2 cachedBoundsX; //Will be used to cache bounds for generating random co-ords
@@ -27,10 +27,10 @@ public static class Maths //Maybe have Maths as namespace, then classes for e.g.
         double maxZ = cachedBoundsZ.Y;
 
         double rangeX = maxX - minX;
-        double rangeY = maxY - minZ;
+        double rangeY = maxY - minY;
         double rangeZ = maxZ - minZ;
 
-        //Calculate our random points based off cached bounds
+        //Calculate random points based off cached bounds
         double sample = random.NextDouble();
         double scaledX = (sample * rangeX) + minX;
         double scaledY = (sample * rangeY) + minY;
@@ -48,6 +48,39 @@ public static class Maths //Maybe have Maths as namespace, then classes for e.g.
     }
 
     //another for random position 2d i.e spawn, as it must start from the botttom, there for we will j in unity vector swamp this Y value to Z value 
+    public static Vector2 GetSpawnPosition2D()
+    {
+        //May want to move this out of function as it will be set every time we use this function!
+        double minX = cachedBoundsX.X;
+        double maxX = cachedBoundsX.Y;
+
+        double minZ = cachedBoundsZ.X;
+        double maxZ = cachedBoundsZ.Y;
+
+        double rangeX = maxX - minX;
+        double rangeZ = maxZ - minZ;
+
+        //Calculate our random points based off cached bounds
+        double sample = random.NextDouble();
+        double scaledX = (sample * rangeX) + minX;
+        double scaledZ = (sample * rangeZ) + minZ;
+
+        //Cast to float so they are more readable if viewing in inspector / debugging
+        float fX = (float)scaledX;
+        float fZ = (float)scaledZ;
+
+        Vector2 randomPoint = new Vector2(fX, fZ);
+
+        return randomPoint;
+
+    }
+
+    public static int CalculateBirdShotScore(float timeOnScreen,float speed)
+    {
+        int score = (int)((1 * speed) - timeOnScreen);
+
+        return score;
+    }
 
     public static void SetBounds(Vector2 x, Vector2 y, Vector2 z) //Cached bounds done on scene or game start, x will represent min and y will represent max value for each bounds param
     {
