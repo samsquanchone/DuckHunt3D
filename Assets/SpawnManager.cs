@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager Instance => m_instance;
+    private static SpawnManager m_instance;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
+    {
+        m_instance = this;
+    }
+
+    public void SpawnBird()
     {
         StartCoroutine("WaitToSpawn");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator WaitToSpawn()
     {
         yield return new WaitForSeconds(2f);
