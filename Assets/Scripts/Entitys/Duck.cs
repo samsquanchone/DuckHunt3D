@@ -1,23 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Duck : MonoBehaviour
 {
 
     [SerializeField] private float speed;
     private Vector3 nextPosition; //Could use transform, but we only need the .position so we can just use a vector 3
+
+    private float duration = 5f;
+
+    UnityAction birdFlewAway;
     // Start is called before the first frame update
     void Start()
     {
        
         Maths.SetBounds(new System.Numerics.Vector2(-5, 5), new System.Numerics.Vector2(0, 10), new System.Numerics.Vector2(-7, 7));
+        birdFlewAway += () => SpawnManager.Instance.DespawnBird(); //Create an action that will notify spawn manager to despawn current bird when it flys away!
         GetNextFlyToPosition();
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
+    {
+        duration = 5f;
+        
+        GetNextFlyToPosition();
+        StartCoroutine("FlyAwayTimer");
+    }
+
+   
+    void FixedUpdate()
     {
         // Move our position a step closer to the target.
         var step = speed * Time.deltaTime; // calculate distance to move
@@ -37,6 +51,17 @@ public class Duck : MonoBehaviour
         nextPosition.x = Maths.GetRandomPosition3D().X;
         nextPosition.y = Maths.GetRandomPosition3D().Y;
         nextPosition.z = Maths.GetRandomPosition3D().Z;
+    }
 
+    public void FlyAway()
+    {
+        birdFlewAway.Invoke();
+    }
+
+    IEnumerator FlyAwayTimer()
+    {
+        yield return new WaitForSeconds(duration);
+        FlyAway();
+        
     }
 }

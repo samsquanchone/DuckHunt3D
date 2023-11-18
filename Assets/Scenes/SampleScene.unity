@@ -630,93 +630,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1584470686}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1182224528
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1182224529}
-  - component: {fileID: 1182224530}
-  m_Layer: 0
-  m_Name: RoundHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1182224529
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182224528}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1882115698}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1182224530
+--- !u!114 &1182224530 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+    type: 3}
+  m_PrefabInstance: {fileID: 7760247954436160003}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182224528}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a63ccc2f97b3f1f4caa829502353eb35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shots: 3
-  birdsHit: 0
-  birdsNeeded: 5
-  birdCount: 0
---- !u!1 &1342546597
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1342546598}
-  - component: {fileID: 1342546599}
-  m_Layer: 0
-  m_Name: SpawnManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1342546598
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1342546597}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1882115698}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1342546599
+--- !u!114 &1342546599 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+    type: 3}
+  m_PrefabInstance: {fileID: 7760247954436160003}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1342546597}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de00a0692d902dd4cacbfe8902d5759e, type: 3}
@@ -771,39 +703,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1094643374}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1882115697
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1882115698}
-  m_Layer: 0
-  m_Name: Gameplay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1882115698
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1882115697}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.583721, y: -13.1781225, z: 1.2250338}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1342546598}
-  - {fileID: 1182224529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &662234998951725859
@@ -879,13 +778,151 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7a9f06282afdde418b12df3520663be, type: 3}
+--- !u!1001 &7760247954436160003
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2665667984891345871, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_Name
+      value: Gameplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1182224530}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BirdTimedOUt
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoundHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812666834528736855, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: despawnBird.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.583721
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -13.1781225
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.2250338
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6071590600465594770, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1342546599}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DespawnBird
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SpawnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347364323431199358, guid: faae50ee3688d9a46ad438d5cfb50a86,
+        type: 3}
+      propertyPath: flyBirdAway.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: faae50ee3688d9a46ad438d5cfb50a86, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 705507995}
+  - {fileID: 7760247954436160003}
   - {fileID: 296699081}
   - {fileID: 878859929}
   - {fileID: 662234998951725859}
   - {fileID: 1584470686}
-  - {fileID: 1882115698}

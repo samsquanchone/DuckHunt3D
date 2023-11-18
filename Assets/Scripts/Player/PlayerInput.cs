@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Enum used with the event system so difffrent parts of the code base can make decisions on an event invoke based on the enum state passed with the invoke of dialogue obserbers
 /// </summary>
-public enum PlayerState { DUCK_SHOT, DUCK_MISSED};
+public enum PlayerState { DUCK_SHOT, DUCK_MISSED };
 
 
 public interface PlayerSubject
@@ -31,31 +31,32 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            // Construct a ray from the current touch coordinates
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-
-            Debug.Log("Player has shot");
-
-            RaycastHit hit;
-            // Create a particle if hit
-            if (Physics.Raycast(ray, out hit))
+        if (Input.touchCount > 0)
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                if (hit.collider.CompareTag("Duck"))
+                // Construct a ray from the current touch coordinates
+                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+                Debug.Log("Player has shot");
+
+                RaycastHit hit;
+                // Create a particle if hit
+                if (Physics.Raycast(ray, out hit))
                 {
-                    Debug.Log("Duck Hit");
-                    PoolingManager.Instance.CoolObject(hit.collider.gameObject, PoolingObjectType.DUCK); //Could you observer pattern here, but we have the gameobject to return to pool, so let's not overcomplicate it and can just use the singleton!
-                    NotifyObservers(PlayerState.DUCK_SHOT);
+                    if (hit.collider.CompareTag("Duck"))
+                    {
+                        Debug.Log("Duck Hit");
+                        PoolingManager.Instance.CoolObject(hit.collider.gameObject, PoolingObjectType.DUCK); //Could you observer pattern here, but we have the gameobject to return to pool, so let's not overcomplicate it and can just use the singleton!
+                        NotifyObservers(PlayerState.DUCK_SHOT);
+                    }
+                    else
+                    {
+                        Debug.Log("Duck Missed");
+                        NotifyObservers(PlayerState.DUCK_MISSED);
+                    }
                 }
-                else
-                {
-                    Debug.Log("Duck Missed");
-                    NotifyObservers(PlayerState.DUCK_MISSED);
-                }
+
             }
-            
-        }
 
 
     }

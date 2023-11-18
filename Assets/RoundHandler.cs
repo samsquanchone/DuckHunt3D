@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 
 /// <summary>
@@ -22,6 +22,8 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
     [SerializeField] private int birdsNeeded = 5;
     [SerializeField] private int birdCount = 0; //For checking how many birds have been spawned this round
 
+    [SerializeField] private UnityEvent flyBirdAway;
+    
    
     private void Start()
     {
@@ -43,25 +45,34 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         CheckAmmo();
     }
 
+    public void BirdTimedOUt()
+    {
+        CheckCount();
+    }
+
     private void CheckCount()
     {
         //If bird count is max in a round then check results, else spawn another bird!
         if (birdCount == 10)
             RoundResults();
         else
+            birdCount += 1;
             SpawnManager.Instance.SpawnBird();
     }
 
     private void CheckAmmo()
     {
         if (shots == 0)
-            CheckCount();
+
+        {
+            flyBirdAway.Invoke();
             ResetAmmo();
+        }
     }
 
     private void ResetAmmo()
     {
-        shots = 3;
+           shots = 3;
     }
 
     private void RoundResults()
