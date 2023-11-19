@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class AmmoUI : MonoBehaviour, IPlayerObserver
 {
     
-    const string prefix = "AMMO: ";
-    int ammo = 3; //Wil be using until we have bullet images (As we are keeping track of ammo for round purposes, and i don't like repeating this here)
+   
+    [SerializeField] private List<GameObject> ammoUIObjects = new();
+    int ammoCount = 2; //Start from 2 as we will have list as 0 index start
 
-    [SerializeField] private TMP_Text ammoText;
+    Color alphaColour;
 
     void Start()
     {
         GameManager.Instance.AddPlayerObserver(this);
-
-        ammoText.SetText(prefix + ammo);
+        alphaColour = ammoUIObjects[0].GetComponent<Image>().color;
     }
 
     public void OnNotify(PlayerState state)
@@ -26,14 +27,21 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver
 
     private void DecreaseAmmoCount()
     {
-        ammo -= 1;
-        ammoText.SetText(prefix + ammo);
+        //As I am using a layoutgroup setting to not active resized objects, hence why I am using this alpha method
+        alphaColour.a = 0;
+        ammoUIObjects[ammoCount].GetComponent<Image>().color = alphaColour;
+        ammoCount -= 1;
     }
 
     public void ResetAmmo()
     {
-        ammo = 3;
-        ammoText.SetText(prefix + ammo);
+        foreach (var ammo in ammoUIObjects)
+        {
+            alphaColour.a = 1;
+            ammo.GetComponent<Image>().color = alphaColour;
+        }
+
+        ammoCount = 2;
     }
 
 }
