@@ -100,6 +100,7 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         uiEventList[2].Invoke();
         ResetAmmo();
         uiEventList[3].Invoke();
+        GameManager.Instance.IncrementRound();
         CheckCount(); //saves us needing to repeat the call to the spawn manager!
 
     }

@@ -35,6 +35,7 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
     {
         yield return new WaitForSeconds(0.2f);
         playerObservers = new(GameManager.Instance.GetPlayerObservers());
+
     }
 
     // Update is called once per frame

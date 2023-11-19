@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour
 
 
     int score = 0;
+    int round = 1;
     void Awake()
     {
         m_instance = this;
     }
+
     public void AddPlayerObserver(IPlayerObserver observer)
     {
         playerObservers.Add(observer);
@@ -35,11 +37,16 @@ public class GameManager : MonoBehaviour
         score += scoreToIncrementBy;
         //Pop up score for what the score is and maybe pass vector 2 of position!
         scoreUI.SetScore(score);
-
+        
+    }
+    public void IncrementRound()
+    {
+        round += 1;
     }
 
     public void GameOver()
     {
+        PersistentData.SetGameResults(score, round);
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 

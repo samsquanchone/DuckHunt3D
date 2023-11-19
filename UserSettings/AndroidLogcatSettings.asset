@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "QV7813L88K",
         "name": "com.Squanch.DuckHunter3D",
-        "processId": 25703,
+        "processId": 11723,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,43 +11,31 @@
         {
             "deviceId": "QV7813L88K",
             "name": "com.Squanch.DuckHunter3D",
-            "processId": 32428,
+            "processId": 25703,
             "exited": true
         },
         {
             "deviceId": "QV7813L88K",
             "name": "com.Squanch.DuckHunter3D",
-            "processId": 29808,
-            "exited": false
+            "processId": 10418,
+            "exited": true
         },
         {
             "deviceId": "QV7813L88K",
             "name": "com.Squanch.DuckHunter3D",
-            "processId": 31138,
-            "exited": false
+            "processId": 31816,
+            "exited": true
         },
         {
             "deviceId": "QV7813L88K",
             "name": "com.Squanch.DuckHunter3D",
-            "processId": 31624,
-            "exited": false
+            "processId": 3317,
+            "exited": true
         },
         {
             "deviceId": "QV7813L88K",
             "name": "com.Squanch.DuckHunter3D",
-            "processId": 5398,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7813L88K",
-            "name": "com.Squanch.DuckHunter3D",
-            "processId": 24917,
-            "exited": false
-        },
-        {
-            "deviceId": "QV7813L88K",
-            "name": "com.Squanch.DuckHunter3D",
-            "processId": 25703,
+            "processId": 11723,
             "exited": false
         },
         {
