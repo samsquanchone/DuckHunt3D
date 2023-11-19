@@ -32,6 +32,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     {
         duration = 5f;
         timeOnScreen = 0;
+        speed = Maths.CalculateBirdSpeed(GameManager.Instance.GetRound()); //Calculate a random duck speed based off the current round
         GetNextFlyToPosition();
         StartCoroutine("FlyAwayTimer");
     }

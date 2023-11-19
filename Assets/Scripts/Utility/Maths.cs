@@ -77,9 +77,33 @@ public static class Maths //Maybe have Maths as namespace, then classes for e.g.
 
     public static int CalculateBirdShotScore(float timeOnScreen,float speed)
     {
-        int score = (int)((1 * speed) - timeOnScreen);
+        int score = (int)((1 * speed) - timeOnScreen); //Very basic sum, should make it a bit more fancy, but it works for now...
 
         return score;
+    }
+
+    public static float CalculateBirdSpeed(int currentRound)
+    {
+
+        //May want to move this out of function as it will be set every time we use this function!
+        double minSpeed = 2 + (0.35 * currentRound);
+        double maxSpeed = 4 + (0.35 * currentRound);
+
+        
+        double range = maxSpeed - minSpeed;
+
+        //Calculate our random points based off cached bounds
+        double sample = random.NextDouble();
+        double scaledSpeed = (sample * range) + minSpeed;
+        
+
+        //Cast to float so they are more readable if viewing in inspector / debugging
+        float speedFloat = (float)scaledSpeed;
+
+
+        float speed = speedFloat;
+
+        return speed;
     }
 
     public static void SetBounds(Vector2 x, Vector2 y, Vector2 z) //Cached bounds done on scene or game start, x will represent min and y will represent max value for each bounds param
