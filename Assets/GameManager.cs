@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour
         round += 1;
     }
 
+    public int GetRound()
+    {
+        return round;
+    }
+
     public void GameOver()
     {
         PersistentData.SetGameResults(score, round);

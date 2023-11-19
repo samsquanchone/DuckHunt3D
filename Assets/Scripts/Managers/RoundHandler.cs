@@ -38,6 +38,7 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
     {
         shots -= 1;
         birdsHit += 1;
+        uiEventList[1].Invoke();
         CheckCount();
         ResetAmmo();
     }
@@ -50,6 +51,7 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
 
     public void BirdTimedOUt()
     {
+        uiEventList[6].Invoke();
         CheckCount();
     }
 
@@ -64,7 +66,7 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         {
             SpawnManager.Instance.SpawnBird();
             birdCount += 1;
-            uiEventList[1].Invoke();
+            uiEventList[7].Invoke();
         }
     }
 
@@ -101,8 +103,22 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         ResetAmmo();
         uiEventList[3].Invoke();
         GameManager.Instance.IncrementRound();
+
+        CheckDucksNeededIncrement();
         CheckCount(); //saves us needing to repeat the call to the spawn manager!
 
+    }
+
+    private void CheckDucksNeededIncrement()
+    {
+        int round = GameManager.Instance.GetRound();
+
+        if (birdsNeeded != 10 && round > 10)
+            if (round % 3 == 0) //Would do it like duck hunter (11,13,15,20) but I like the thi approach (even if it is off by OG duckhunt by one round)
+            {
+                birdsNeeded += 1;
+                uiEventList[4].Invoke();
+            }
     }
 
     public void OnNotify(PlayerState state)

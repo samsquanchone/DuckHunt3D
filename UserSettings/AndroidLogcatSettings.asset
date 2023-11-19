@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "QV7813L88K",
         "name": "com.Squanch.DuckHunter3D",
-        "processId": 11723,
+        "processId": 7274,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -36,6 +36,18 @@
             "deviceId": "QV7813L88K",
             "name": "com.Squanch.DuckHunter3D",
             "processId": 11723,
+            "exited": false
+        },
+        {
+            "deviceId": "QV7813L88K",
+            "name": "com.Squanch.DuckHunter3D",
+            "processId": 12961,
+            "exited": false
+        },
+        {
+            "deviceId": "QV7813L88K",
+            "name": "com.Squanch.DuckHunter3D",
+            "processId": 7274,
             "exited": false
         },
         {
