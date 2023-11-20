@@ -53,7 +53,7 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
 
             RaycastHit hit;
             // Create a particle if hit
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 1000))
             {
                 if (hit.collider.CompareTag("Duck"))
                 {
@@ -63,11 +63,18 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
 
                 }
                 else
-                {
-                    
-                    Debug.Log("Duck Missed");
-                    NotifyObservers(PlayerState.DUCK_MISSED);
-                }
+            {
+
+                Debug.Log("Duck Missed");
+                NotifyObservers(PlayerState.DUCK_MISSED);
+            }
+               
+            }
+            else
+            {
+
+                Debug.Log("Duck Missed");
+                NotifyObservers(PlayerState.DUCK_MISSED);
             }
         }
     }
