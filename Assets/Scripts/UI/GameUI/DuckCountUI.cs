@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class DuckCountUI : MonoBehaviour
+public class DuckCountUI : MonoBehaviour, IRoundObserver
 {
     const string prefix = "Duck Count: ";
     const string suffix = "/10";
@@ -25,6 +25,7 @@ public class DuckCountUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        BroadCastManager.Instance.AddRoundObserver(this); //Subscribe to round subject
         //Could replace hard increment by a number for e.g. implementing different game modes!
         for (int i = 0; i < 10; i++)
         {
@@ -33,7 +34,7 @@ public class DuckCountUI : MonoBehaviour
             duckSpriteList.Add(_obj.GetComponent<Image>());
             duckSpriteList[i].color = whiteCol;
         }
-      //  duckCountText.SetText(prefix + duckCount + suffix);
+        //  duckCountText.SetText(prefix + duckCount + suffix);
     }
 
 
@@ -43,7 +44,7 @@ public class DuckCountUI : MonoBehaviour
         StartCoroutine("FlashDuck");
 
     }
-    
+
 
     public void DuckHit()
     {
@@ -66,7 +67,7 @@ public class DuckCountUI : MonoBehaviour
         {
             duck.color = whiteCol;
         }
-       // duckCountText.SetText(prefix + duckCount + suffix);
+        // duckCountText.SetText(prefix + duckCount + suffix);
     }
 
     IEnumerator FlashDuck()
@@ -86,6 +87,30 @@ public class DuckCountUI : MonoBehaviour
             isNewRound = false;
 
 
+        }
+    }
+
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded)
+    {
+        switch (state)
+        {
+            case RoundState.DUCKSPAWNINTERIM:
+
+                break;
+
+            case RoundState.DUCKSPAWNING:
+                NewDuckSpawning();
+                break;
+
+            case RoundState.NEWROUND:
+                ResetDuckCount();
+                break;
+            case RoundState.BIRDHIT:
+                DuckHit();
+                break;
+            case RoundState.BIRDFLYAWAY:
+                DuckMissed();
+                break;
         }
     }
 }

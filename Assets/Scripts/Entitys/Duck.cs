@@ -24,8 +24,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     //Called when pool is filled as we want to add this as player observer, but is being set to inactive so failing to register as observer1
     public void Innit()
     {
-
-        GameManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
+        BroadCastManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
     }
 
     private void OnEnable()

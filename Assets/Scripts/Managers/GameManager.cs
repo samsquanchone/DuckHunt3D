@@ -11,24 +11,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] ScoreUI scoreUI; //This is just to get the full game loop and most of the features required! Should move to our purposed broadcast manager and add to a score UI event system!
 
-    private List<IPlayerObserver> playerObservers = new();
-
-
     int score = 0;
     int round = 1;
     void Awake()
     {
         m_instance = this;
-    }
-
-    public void AddPlayerObserver(IPlayerObserver observer)
-    {
-        playerObservers.Add(observer);
-    }
-
-    public List<IPlayerObserver> GetPlayerObservers()
-    {
-        return playerObservers;
     }
 
     //Should move this out of here once we set up the proper broadcast manager!

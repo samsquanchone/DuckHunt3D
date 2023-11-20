@@ -8,19 +8,11 @@ using UnityEngine;
 /// </summary>
 public enum PlayerState { DUCK_SHOT, DUCK_MISSED };
 
-
-public interface PlayerSubject
+public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
 {
-    List<IPlayerObserver> playerObservers { get; set; }
+    public List<IPlayerObserver> PlayerObservers { get; set; }
 
-    public void AddObserver(IPlayerObserver observer);
-    public void RemoveObserver(IPlayerObserver observer);
-
-    public void NotifyObservers(PlayerState state);
-}
-public class PlayerInput : MonoBehaviour, PlayerSubject
-{
-    public List<IPlayerObserver> playerObservers { get; set; }
+    RoundState roundState; //Will be used as a flag by the player so they can't shoot inbetween rounds
 
     // Start is called before the first frame update
     void Start()
@@ -28,13 +20,14 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
 
         //playerObservers = new(GameManager.Instance.GetPlayerObservers()); //Set up observer list, currently everything is j on start and end observer wise, but can modify if observer lifecycle needs to be more dynamic!
         StartCoroutine("LateStart");
+        BroadCastManager.Instance.AddRoundObserver(this);
     }
 
-    //Cheesy fix for now as Unity changed order of execution when i last built game. Should sort out order of execution in player settings!;
+    //Cheesy fix for now as Unity changed order of execution when i last built game. Should sort out order of execution in player settings!
     IEnumerator LateStart()
     {
         yield return new WaitForSeconds(0.2f);
-        playerObservers = new(GameManager.Instance.GetPlayerObservers());
+        PlayerObservers = new(BroadCastManager.Instance.GetPlayerObservers()); //Set up 
 
     }
 
@@ -44,44 +37,49 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
         if (Input.touchCount > 0)
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                // Construct a ray from the current touch coordinates
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-
-                Debug.Log("Player has shot");
-
-                RaycastHit hit;
-                // Create a particle if hit
-                if (Physics.Raycast(ray, out hit))
-                {
-                    if (hit.collider.CompareTag("Duck"))
-                    {
-                        Debug.Log("Duck Hit");
-                        this.NotifyObservers(PlayerState.DUCK_SHOT);
-                        PoolingManager.Instance.CoolObject(hit.collider.gameObject, PoolingObjectType.DUCK); //Could you observer pattern here, but we have the gameobject to return to pool, so let's not overcomplicate it and can just use the singleton!
-                        
-                    }
-                    else
-                    {
-                        Debug.Log("Duck Missed");
-                        NotifyObservers(PlayerState.DUCK_MISSED);
-                    }
-                }
-
+                PlayerShoot();
             }
+    }
 
+    void PlayerShoot()
+    {
+        if (roundState == RoundState.DUCKACTIVE)
+        {
+            // Construct a ray from the current touch coordinates
+            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
+            Debug.Log("Player has shot");
+
+            RaycastHit hit;
+            // Create a particle if hit
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.CompareTag("Duck"))
+                {
+                    Debug.Log("Duck Hit");
+                    this.NotifyObservers(PlayerState.DUCK_SHOT);
+                    PoolingManager.Instance.CoolObject(hit.collider.gameObject, PoolingObjectType.DUCK); //Could you observer pattern here, but we have the gameobject to return to pool, so let's not overcomplicate it and can just use the singleton!
+
+                }
+                else
+                {
+                    Debug.Log("Duck Missed");
+                    NotifyObservers(PlayerState.DUCK_MISSED);
+                }
+            }
+        }
     }
 
 
     public void AddObserver(IPlayerObserver observer)
     {
-        playerObservers.Add(observer);
+        PlayerObservers.Add(observer);
     }
 
     public void NotifyObservers(PlayerState state)
     {
         //Notify observers about what has happened e.g. missed duck or shot duck
-        foreach (var observer in playerObservers)
+        foreach (var observer in PlayerObservers)
         {
             observer.OnNotify(state);
         }
@@ -89,7 +87,12 @@ public class PlayerInput : MonoBehaviour, PlayerSubject
 
     public void RemoveObserver(IPlayerObserver observer)
     {
-        playerObservers.Remove(observer);
+        PlayerObservers.Remove(observer);
+    }
+
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded)
+    {
+        roundState = state;
     }
 }
 

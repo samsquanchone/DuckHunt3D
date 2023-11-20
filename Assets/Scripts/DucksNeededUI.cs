@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class DucksNeededUI : MonoBehaviour
+public class DucksNeededUI : MonoBehaviour, IRoundObserver
 {
 
     //private TMP_Text duckNeededText;
@@ -20,7 +20,7 @@ public class DucksNeededUI : MonoBehaviour
 
     private void Start()
     {
-
+        BroadCastManager.Instance.AddRoundObserver(this);
         alphaColour = barGroupUIPrefab.GetComponentInChildren<Image>().color;
         alphaColour.a = 0;
         for (int i = 0; i < 10; i++)
@@ -74,5 +74,16 @@ public class DucksNeededUI : MonoBehaviour
             bar.color = alphaColour;
         }
 
+    }
+
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded)
+    {
+        switch (state)
+        {
+                case RoundState.DUCKSNEEDEDINCREASED:
+                IncrementDucksNeeded();
+                break;
+
+        }
     }
 }

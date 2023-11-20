@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator WaitToSpawn()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.1f);
 
         //Get object from pool
         _obj = PoolingManager.Instance.GetPoolObject(PoolingObjectType.DUCK);
