@@ -10,7 +10,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     private Vector3 nextPosition; //Could use transform, but we only need the .position so we can just use a vector 3
 
     private float duration = 5f;
-    float timeOnScreen = 0;
+    float timeOnScreen = 1;
 
     UnityAction birdFlewAway;
     // Start is called before the first frame update
@@ -31,7 +31,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     private void OnEnable()
     {
         duration = 5f;
-        timeOnScreen = 0;
+        timeOnScreen = 1; //We will just start from 1 so we don't devide by 0
         speed = Maths.CalculateBirdSpeed(GameManager.Instance.GetRound()); //Calculate a random duck speed based off the current round
         GetNextFlyToPosition();
         StartCoroutine("FlyAwayTimer");
@@ -40,7 +40,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     //Fixed update for smoother movement
     void FixedUpdate()
     {
-        timeOnScreen =+ Time.deltaTime;
+        timeOnScreen += Time.deltaTime;
         // Move our position a step closer to the target.
         var step = speed * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, nextPosition, step);
@@ -68,23 +68,29 @@ public class Duck : MonoBehaviour, IPlayerObserver
 
     private void CalculateScore()
     {
-        GameManager.Instance.IncrementScore(Maths.CalculateBirdShotScore(timeOnScreen, speed));
+
+
+        int score = Maths.CalculateBirdShotScore(timeOnScreen, speed);
+        GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
+
     }
 
     IEnumerator FlyAwayTimer()
     {
         yield return new WaitForSeconds(duration);
         FlyAway();
-        
+
     }
 
     public void OnNotify(PlayerState state)
     {
-        switch (state)
-        {
-            case PlayerState.DUCK_SHOT:
-                CalculateScore();
-                break;
-        }
+        if (this.isActiveAndEnabled) //Could use ID but this should work fine, avoids calling behaviour on all pooled objects
+
+            switch (state)
+            {
+                case PlayerState.DUCK_SHOT:
+                    CalculateScore();
+                    break;
+            }
     }
 }

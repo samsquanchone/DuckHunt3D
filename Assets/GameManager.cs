@@ -32,8 +32,9 @@ public class GameManager : MonoBehaviour
     }
 
     //Should move this out of here once we set up the proper broadcast manager!
-    public void IncrementScore(int scoreToIncrementBy)
+    public void IncrementScore(int scoreToIncrementBy, Vector2 displayPopUpPos) //This must be changed to be handled through observer pattern!
     {
+        scoreUI.SetPopUpScore(scoreToIncrementBy, displayPopUpPos);
         score += scoreToIncrementBy;
         //Pop up score for what the score is and maybe pass vector 2 of position!
         scoreUI.SetScore(score);
