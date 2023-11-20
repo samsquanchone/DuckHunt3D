@@ -40,7 +40,7 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         birdsHit += 1;
         uiEventList[1].Invoke();
         CheckCount();
-        ResetAmmo();
+        
     }
 
     public void BirdMissed()
@@ -64,9 +64,8 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
         }
         else
         {
-            SpawnManager.Instance.SpawnBird();
-            birdCount += 1;
-            uiEventList[7].Invoke();
+            StartCoroutine(DuckSpawnInterim());
+            
         }
     }
 
@@ -119,6 +118,15 @@ public class RoundHandler : MonoBehaviour, IPlayerObserver
                 birdsNeeded += 1;
                 uiEventList[4].Invoke();
             }
+    }
+
+    IEnumerator DuckSpawnInterim()
+    {
+        birdCount += 1;
+        yield return new WaitForSeconds(1);
+        ResetAmmo();
+        uiEventList[7].Invoke();
+        SpawnManager.Instance.SpawnBird();
     }
 
     public void OnNotify(PlayerState state)

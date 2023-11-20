@@ -77,7 +77,7 @@ public static class Maths //Maybe have Maths as namespace, then classes for e.g.
 
     public static int CalculateBirdShotScore(float timeOnScreen,float speed)
     {
-        int score = (int)((1 * speed) - timeOnScreen); //Very basic sum, should make it a bit more fancy, but it works for now...
+        int score = (int)(500 / timeOnScreen * speed); //Very basic sum, should make it a bit more fancy, but it works for now...
 
         return score;
     }

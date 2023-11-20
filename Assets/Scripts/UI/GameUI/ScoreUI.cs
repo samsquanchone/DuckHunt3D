@@ -5,18 +5,37 @@ using TMPro;
 
 public class ScoreUI : MonoBehaviour
 {
+    private TMP_Text overalScoreText;
+    const string overalScorePrefix = "Score: ";
 
-    const string prefix = "Score: ";
-    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] TMP_Text popUpScoreText;
+    const string popUpScorePrefix = "+";
 
     private void Start()
     {
-        scoreText = GetComponent<TMP_Text>(); //Get ref to TMP text
-        scoreText.SetText(prefix + 0);
+        overalScoreText = GetComponent<TMP_Text>(); //Get ref to TMP text
+        overalScoreText.SetText(overalScorePrefix + 0);
     }
 
     public void SetScore(int score)
     {
-        scoreText.SetText(prefix + score);
+       
+        overalScoreText.SetText(overalScorePrefix + score);
+    }
+
+    public void SetPopUpScore(int score, Vector2 pos)
+    {
+        popUpScoreText.SetText(popUpScorePrefix + score);
+        popUpScoreText.transform.position= pos;
+        popUpScoreText.gameObject.SetActive(true);
+
+        StartCoroutine(PopUpTimer());
+       
+    }
+
+    IEnumerator PopUpTimer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        popUpScoreText.gameObject.SetActive(false);
     }
 }
