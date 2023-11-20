@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class AmmoUI : MonoBehaviour, IPlayerObserver
+public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
 {
     
    
@@ -15,7 +15,8 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver
 
     void Start()
     {
-        GameManager.Instance.AddPlayerObserver(this);
+        BroadCastManager.Instance.AddPlayerObserver(this);
+        BroadCastManager.Instance.AddRoundObserver(this);
         alphaColour = ammoUIObjects[0].GetComponent<Image>().color;
     }
 
@@ -44,4 +45,27 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver
         ammoCount = 2;
     }
 
+    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+    {
+        switch (state)
+        {
+            case RoundState.DUCKSPAWNINTERIM:
+
+                break;
+
+            case RoundState.DUCKSPAWNING:
+                ResetAmmo();
+                break;
+
+            case RoundState.NEWROUND:
+                ResetAmmo();
+                break;
+            case RoundState.BIRDHIT:
+                
+                break;
+            case RoundState.BIRDFLYAWAY:
+                
+                break;
+        }
+    }
 }

@@ -16,7 +16,6 @@ public class Duck : MonoBehaviour, IPlayerObserver
     // Start is called before the first frame update
     void Start()
     {
-        Maths.SetBounds(new System.Numerics.Vector2(-5, 5), new System.Numerics.Vector2(0, 10), new System.Numerics.Vector2(-7, 7)); //Need to move to game manager!
         birdFlewAway += () => SpawnManager.Instance.DespawnBird(); //Create an action that will notify spawn manager to despawn current bird when it flys away!
         //GetNextFlyToPosition();
     }
@@ -24,8 +23,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     //Called when pool is filled as we want to add this as player observer, but is being set to inactive so failing to register as observer1
     public void Innit()
     {
-
-        GameManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
+        BroadCastManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
     }
 
     private void OnEnable()
@@ -68,11 +66,8 @@ public class Duck : MonoBehaviour, IPlayerObserver
 
     private void CalculateScore()
     {
-
-
         int score = Maths.CalculateBirdShotScore(timeOnScreen, speed);
         GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
-
     }
 
     IEnumerator FlyAwayTimer()

@@ -6,7 +6,7 @@ using TMPro;
 public class ScoreUI : MonoBehaviour
 {
     private TMP_Text overalScoreText;
-    const string overalScorePrefix = "Score: ";
+    const string overalScoreSuffix = "\nScore";
 
     [SerializeField] TMP_Text popUpScoreText;
     const string popUpScorePrefix = "+";
@@ -14,13 +14,13 @@ public class ScoreUI : MonoBehaviour
     private void Start()
     {
         overalScoreText = GetComponent<TMP_Text>(); //Get ref to TMP text
-        overalScoreText.SetText(overalScorePrefix + 0);
+        overalScoreText.SetText(0 + overalScoreSuffix);
     }
 
     public void SetScore(int score)
     {
        
-        overalScoreText.SetText(overalScorePrefix + score);
+        overalScoreText.SetText(score + overalScoreSuffix);
     }
 
     public void SetPopUpScore(int score, Vector2 pos)
