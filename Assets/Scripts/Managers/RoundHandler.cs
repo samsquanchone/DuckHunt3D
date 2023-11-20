@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum RoundState {BIRDFLYAWAY, BIRDHIT, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE };
+public enum RoundState { BIRDFLYAWAY, BIRDHIT, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM }; //Change all to duck or bird, be consistent
 public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 {
     [SerializeField] private int shots = 3;
@@ -11,9 +11,9 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     [SerializeField] private int birdsNeeded = 5;
     [SerializeField] private int birdCount = 0; //For checking how many birds have been spawned this round
     int round = 1;
+    bool isPerfectRound = false;
 
     [SerializeField] private UnityEvent flyBirdAway;
-   
 
     public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are set to observers regardless of if they need them
     public List<IPlayerObserver> PlayerObservers { get; set; }
@@ -25,14 +25,14 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }
 
-   
+
     public void BirdHit()
     {
         shots -= 1;
         birdsHit += 1;
-        NotifyObservers(RoundState.BIRDHIT, round, birdsNeeded);
+        NotifyObservers(RoundState.BIRDHIT, round, birdsNeeded, isPerfectRound);
         CheckCount();
-        
+
     }
 
     public void BirdMissed()
@@ -43,7 +43,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 
     public void BirdTimedOUt()
     {
-        NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded);
+        NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
         CheckCount();
     }
 
@@ -77,10 +77,14 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     private void RoundResults()
     {
         if (birdsHit >= birdsNeeded)
-            //Increment round here
-            NewRound();
+        {
+            IsPerfectRound();
+            StartCoroutine(RoundInterim());
+        }
         else
+        {
             GameManager.Instance.GameOver();
+        }
     }
 
     private void NewRound()
@@ -88,9 +92,9 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         //Calculate birds needed for this round!
         birdsHit = 0;
         birdCount = 0;
-        NotifyObservers(RoundState.NEWROUND, round, birdsNeeded);
-        ResetAmmo();
         round += 1;
+        NotifyObservers(RoundState.NEWROUND, round, birdsNeeded, isPerfectRound);
+        ResetAmmo();
         GameManager.Instance.IncrementRound();
         CheckDucksNeededIncrement();
         CheckCount(); //saves us needing to repeat the call to the spawn manager!
@@ -99,24 +103,42 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 
     private void CheckDucksNeededIncrement()
     {
-        int round = GameManager.Instance.GetRound();
-
         if (birdsNeeded != 10 && round > 10)
             if (round % 3 == 0) //Would do it like duck hunter (11,13,15,20) but I like this approach (even if it is off from OG duckhunt by one round)
             {
                 birdsNeeded += 1;
-                NotifyObservers(RoundState.NEWROUND, round, birdsNeeded);
+                NotifyObservers(RoundState.DUCKSNEEDEDINCREASED, round, birdsNeeded, isPerfectRound);
             }
+    }
+    void IsPerfectRound()
+    {
+        if (birdsHit == 10)
+        {
+            isPerfectRound = true;
+            GameManager.Instance.RoundBonus();
+        }
+        else
+        {
+            isPerfectRound = false;
+        }
     }
 
     IEnumerator DuckSpawnInterim()
     {
-        birdCount += 1;
+        
         yield return new WaitForSeconds(1);
         ResetAmmo();
-        NotifyObservers(RoundState.DUCKSPAWNING, round, birdsNeeded);
+        NotifyObservers(RoundState.DUCKSPAWNING, round, birdsNeeded, isPerfectRound);
         SpawnManager.Instance.SpawnBird();
-        NotifyObservers(RoundState.DUCKACTIVE, round, birdsNeeded); //Will be used as flag by player
+        birdCount += 1;
+        NotifyObservers(RoundState.DUCKACTIVE, round, birdsNeeded, isPerfectRound); //Will be used as flag by player
+    }
+
+    IEnumerator RoundInterim()
+    {
+        NotifyObservers(RoundState.ROUNDINTERIM, round, birdsNeeded, isPerfectRound);
+        yield return new WaitForSeconds(3);
+        NewRound();
     }
 
     //Define specific interface so it can be distinguished, as I plan on using various interface based subjects for observer pattern
@@ -145,12 +167,12 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         RoundObservers.Remove(observer);
     }
 
-    public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded)
+    public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         //Notify observers about what has happened e.g. missed duck or shot duck
         foreach (var observer in RoundObservers)
         {
-            observer.OnNotify(state, _currentRound, _birdsNeeded);
+            observer.OnNotify(state, _currentRound, _birdsNeeded, _isPerfectRound);
         }
     }
 }

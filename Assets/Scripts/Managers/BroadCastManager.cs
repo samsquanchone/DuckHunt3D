@@ -27,20 +27,21 @@ public interface IPlayerObserver
 }
 #endregion
 
+#region Round
 public interface IRoundSubject
 {
     List<IRoundObserver> RoundObservers { get; set; }
 
     public void AddObserver(IRoundObserver observer);
     public void RemoveObserver(IRoundObserver observer);
-    public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded);
+    public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
 }
 
 public interface IRoundObserver
 {
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded);
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
 }
-
+#endregion
 
 public class BroadCastManager : MonoBehaviour
 {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GameManager : MonoBehaviour
 {
 
@@ -18,6 +19,12 @@ public class GameManager : MonoBehaviour
         m_instance = this;
     }
 
+    private void Start()
+    {
+        Time.timeScale = 1; //Just incase user goes to main menu and then play's again
+        Maths.SetBounds(new System.Numerics.Vector2(-5, 5), new System.Numerics.Vector2(0.9f, 10), new System.Numerics.Vector2(-7, 7)); 
+    }
+
     //Should move this out of here once we set up the proper broadcast manager!
     public void IncrementScore(int scoreToIncrementBy, Vector2 displayPopUpPos) //This must be changed to be handled through observer pattern!
     {
@@ -26,6 +33,12 @@ public class GameManager : MonoBehaviour
         //Pop up score for what the score is and maybe pass vector 2 of position!
         scoreUI.SetScore(score);
         
+    }
+
+    public void RoundBonus()
+    {
+        score += 1000;
+        scoreUI.SetScore(score);
     }
     public void IncrementRound()
     {
@@ -37,10 +50,19 @@ public class GameManager : MonoBehaviour
         return round;
     }
 
+    public void GamePaused()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void GameResumed()
+    {
+        Time.timeScale = 1;
+    }
     public void GameOver()
     {
         PersistentData.SetGameResults(score, round);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        SceneManager.Instance.TransationToScene(2);
     }
 
 }

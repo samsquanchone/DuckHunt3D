@@ -20,7 +20,7 @@ public class RoundCountUI : MonoBehaviour, IRoundObserver
         roundText.SetText(prefix + round);
     }
 
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded)
+    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         switch (state)
         {

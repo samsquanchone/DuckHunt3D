@@ -34,8 +34,9 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.touchCount > 0)
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            if (Input.GetTouch(0).phase == TouchPhase.Began && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) //Check if finger down and if it is not pressing button
             {
                 PlayerShoot();
             }
@@ -63,6 +64,7 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
                 }
                 else
                 {
+                    
                     Debug.Log("Duck Missed");
                     NotifyObservers(PlayerState.DUCK_MISSED);
                 }
@@ -90,7 +92,7 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
         PlayerObservers.Remove(observer);
     }
 
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded)
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         roundState = state;
     }

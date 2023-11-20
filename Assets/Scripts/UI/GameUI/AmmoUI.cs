@@ -45,7 +45,7 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
         ammoCount = 2;
     }
 
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded)
+    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         switch (state)
         {
