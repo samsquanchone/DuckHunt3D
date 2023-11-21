@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum RoundState { BIRDFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM }; //Change all to duck or bird, be consistent
+public enum RoundState { BIRDFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM, DUCKNOTACTIVE }; //Change all to duck or bird, be consistent
 public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 {
     [SerializeField] private int shots = 3;
@@ -46,6 +46,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 
     public void BirdHit()
     {
+        NotifyObservers(RoundState.DUCKNOTACTIVE, round, birdsNeeded, isPerfectRound); 
         shots -= 1;
         birdsHit += 1;
     
@@ -82,8 +83,8 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     {
         if (shots == 0)
         {
-            SpawnManager.Instance.DespawnBird(); // need to chagne
-            BirdTimedOUt();
+            BroadCastManager.Instance.DuckFlyingAway.Invoke();
+            NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
             ResetAmmo();
         }
     }
@@ -102,6 +103,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         }
         else
         {
+            NotifyObservers(RoundState.GAMEOVER, round, birdsNeeded, isPerfectRound);
             GameManager.Instance.GameOver();
         }
     }
@@ -156,7 +158,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     IEnumerator RoundInterim()
     {
         NotifyObservers(RoundState.ROUNDINTERIM, round, birdsNeeded, isPerfectRound);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3.5f);
         NewRound();
     }
 

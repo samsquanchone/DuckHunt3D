@@ -62,7 +62,16 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         PersistentData.SetGameResults(score, round);
+
+        StartCoroutine(WaitForGameOver());
+    }
+
+    //Shoul move and not ref the ui here
+    IEnumerator WaitForGameOver()
+    {
+        yield return new WaitForSeconds(2f);
         SceneManager.Instance.TransationToScene(2);
+
     }
 
 }
