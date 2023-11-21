@@ -53,14 +53,17 @@ public class Duck : MonoBehaviour, IPlayerObserver
     protected void FixedUpdate()
     {
         timeOnScreen += Time.deltaTime;
+       
+        CalculateMovement();
+
+        CalculateRotation();
+       
+    }
+
+    protected void CalculateMovement()
+    {
         // Move our position a step closer to the target.
         var step = movementSpeed * Time.deltaTime; // calculate speed to move (mvoement)
-
-        direction = (nextPosition - transform.position).normalized;
-
-        lookRotation = Quaternion.LookRotation(direction);
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
         transform.position = Vector3.MoveTowards(transform.position, nextPosition, step);
 
@@ -70,6 +73,16 @@ public class Duck : MonoBehaviour, IPlayerObserver
             //Calculate a new position
             GetNextFlyToPosition();
 
+        }
+    }
+
+    protected void CalculateRotation()
+    {
+        direction = (nextPosition - transform.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
         }
     }
 

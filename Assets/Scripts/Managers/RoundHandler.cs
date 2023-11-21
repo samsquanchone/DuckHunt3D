@@ -29,6 +29,17 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         BroadCastManager.Instance.DuckDead.AddListener(newDuckAction);
         BroadCastManager.Instance.AddPlayerObserver(this);
 
+
+        StartCoroutine(StartRoundTimer());
+       
+    }
+
+    IEnumerator StartRoundTimer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        NotifyObservers(RoundState.NEWROUND, round, birdsNeeded, isPerfectRound);
+
+        yield return new WaitForSeconds(0.5f);
         CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }
 
