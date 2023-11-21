@@ -14,7 +14,6 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     bool isPerfectRound = false;
 
     [SerializeField] private UnityEvent flyBirdAway;
-
     UnityAction newDuckAction; //May be able to remove and allow bird missed to just be handled by the event created
     
 
@@ -29,6 +28,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         BroadCastManager.Instance.DuckFlownAway.AddListener(newDuckAction);
         BroadCastManager.Instance.DuckDead.AddListener(newDuckAction);
         BroadCastManager.Instance.AddPlayerObserver(this);
+
         CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using UnityEngine.Events;
 public class DuckCountUI : MonoBehaviour, IRoundObserver, IPlayerObserver
 {
     const string prefix = "Duck Count: ";
@@ -18,16 +18,26 @@ public class DuckCountUI : MonoBehaviour, IRoundObserver, IPlayerObserver
     private List<Image> duckSpriteList = new();
 
     [SerializeField] private TMP_Text duckCountText; //Just for prototyping
+
+    UnityAction FillDuckBlack;
     private int duckCount = 0; //very cheecky should deffo change!
 
     float flashDuration = 2f;
     bool isSpawnInterim = false; //Should be spawning bird
 
     bool isRoundInterim = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
+
         BroadCastManager.Instance.AddRoundObserver(this); //Subscribe to round subject
+        BroadCastManager.Instance.AddPlayerObserver(this);
+
+        FillDuckBlack += DuckMissed;
+        BroadCastManager.Instance.DuckFlownAway.AddListener(FillDuckBlack);
+
         //Could replace hard increment by a number for e.g. implementing different game modes!
         for (int i = 0; i < 10; i++)
         {
@@ -37,6 +47,8 @@ public class DuckCountUI : MonoBehaviour, IRoundObserver, IPlayerObserver
             duckSpriteList[i].color = whiteCol;
         }
         alphaColour = duckSpriteList[0].color; //Cache alpha colour
+
+       
     }
 
 

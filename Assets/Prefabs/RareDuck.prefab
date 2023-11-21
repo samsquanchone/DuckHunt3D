@@ -52,7 +52,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61e9db4ce9c02a443845d09c7f4043f3, type: 2}
+  - {fileID: 2100000, guid: a47a8014099908f4ca88270aa6b6aaf3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,7 +147,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61e9db4ce9c02a443845d09c7f4043f3, type: 2}
+  - {fileID: 2100000, guid: a47a8014099908f4ca88270aa6b6aaf3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -420,10 +420,10 @@ GameObject:
   - component: {fileID: 5434711100964735717}
   - component: {fileID: 3623103052947318495}
   - component: {fileID: 4843112039573667100}
-  - component: {fileID: -4554557497244044973}
   - component: {fileID: 4040815441998919687}
+  - component: {fileID: -6056839696573810010}
   m_Layer: 0
-  m_Name: Mallard
+  m_Name: RareDuck
   m_TagString: Duck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -524,20 +524,6 @@ CapsuleCollider:
   m_Height: 1.6914306
   m_Direction: 1
   m_Center: {x: 0.025101304, y: 0.4735955, z: 0.0002040267}
---- !u!114 &-4554557497244044973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5514768811288569589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55b2880198575954b82bdd746d5b525b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 5
-  rotationSpeed: 3
 --- !u!114 &4040815441998919687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,6 +536,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d435b4022eeba54e83f674baf2f50ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6056839696573810010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514768811288569589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94cbeb94b2adb6b4c85ff89562f614a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 5
+  rotationSpeed: 5
 --- !u!1 &6136342870858815214
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +672,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61e9db4ce9c02a443845d09c7f4043f3, type: 2}
+  - {fileID: 2100000, guid: a47a8014099908f4ca88270aa6b6aaf3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -767,7 +767,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61e9db4ce9c02a443845d09c7f4043f3, type: 2}
+  - {fileID: 2100000, guid: a47a8014099908f4ca88270aa6b6aaf3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
