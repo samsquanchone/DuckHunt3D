@@ -21,6 +21,7 @@ public class SpawnManager : MonoBehaviour
     {
         DespawnBirdAction += DespawnBird;
         BroadCastManager.Instance.DuckFlownAway.AddListener(DespawnBirdAction);
+        BroadCastManager.Instance.DuckDead.AddListener(DespawnBirdAction);
     }
 
     public void SpawnBird()

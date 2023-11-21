@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum RoundState { BIRDFLYAWAY, BIRDHIT, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM }; //Change all to duck or bird, be consistent
+public enum RoundState { BIRDFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM }; //Change all to duck or bird, be consistent
 public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 {
     [SerializeField] private int shots = 3;
@@ -16,16 +16,18 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     [SerializeField] private UnityEvent flyBirdAway;
 
     UnityAction newDuckAction; //May be able to remove and allow bird missed to just be handled by the event created
+    
 
     public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are set to observers regardless of if they need them
     public List<IPlayerObserver> PlayerObservers { get; set; }
 
     private void Start()
     {
-        newDuckAction += BirdTimedOUt;
+        newDuckAction += CheckCount;
 
         RoundObservers = BroadCastManager.Instance.GetRoundObservers();
         BroadCastManager.Instance.DuckFlownAway.AddListener(newDuckAction);
+        BroadCastManager.Instance.DuckDead.AddListener(newDuckAction);
         BroadCastManager.Instance.AddPlayerObserver(this);
         CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }
@@ -35,8 +37,8 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     {
         shots -= 1;
         birdsHit += 1;
-        NotifyObservers(RoundState.BIRDHIT, round, birdsNeeded, isPerfectRound);
-        CheckCount();
+    
+       // CheckCount();
 
     }
 
@@ -69,7 +71,8 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     {
         if (shots == 0)
         {
-            flyBirdAway.Invoke();
+            SpawnManager.Instance.DespawnBird(); // need to chagne
+            BirdTimedOUt();
             ResetAmmo();
         }
     }

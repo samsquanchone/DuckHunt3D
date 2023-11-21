@@ -70,9 +70,10 @@ public class BroadCastManager : MonoBehaviour
     private List<IPlayerObserver> PlayerObservers = new();
     private List<IRoundObserver> RoundObservers = new();
 
-    //Unity based observer pattern (just to show another way of doing it!) 
+    //Unity based observer pattern (just to show another way of doing it!) Donwside is Unity uses reflection for events, so called methods on notified cannot be private like with the interface method!
     public UnityEvent DuckFlyingAway;
     public UnityEvent DuckFlownAway;
+    public UnityEvent DuckDead;
 
     private void Awake()
     {

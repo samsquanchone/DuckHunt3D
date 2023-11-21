@@ -8,13 +8,18 @@ enum DuckState {DYING, DEAD, FLYINGAWAY, FLEWAWAY }
 public class Duck : MonoBehaviour, IPlayerObserver
 {
 
-    [SerializeField] private float speed;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float rotationSpeed;
+    private Quaternion lookRotation;
     private Vector3 nextPosition; //Could use transform, but we only need the .position so we can just use a vector 3
+    private Vector3 direction;
 
     private float duration = 5f;
     float timeOnScreen = 1;
 
     UnityAction birdFlewAway;
+
+    PlayerState playerState; //Used as a flag so the bird is not flown away during death animation
     
     // Start is called before the first frame update
     void Start()
@@ -34,7 +39,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     {
         duration = 5f;
         timeOnScreen = 1; //We will just start from 1 so we don't devide by 0
-        speed = Maths.CalculateBirdSpeed(GameManager.Instance.GetRound()); //Calculate a random duck speed based off the current round
+        movementSpeed = Maths.CalculateBirdSpeed(GameManager.Instance.GetRound()); //Calculate a random duck speed based off the current round
         GetNextFlyToPosition();
         StartCoroutine("FlyAwayTimer");
     }
@@ -44,7 +49,14 @@ public class Duck : MonoBehaviour, IPlayerObserver
     {
         timeOnScreen += Time.deltaTime;
         // Move our position a step closer to the target.
-        var step = speed * Time.deltaTime; // calculate distance to move
+        var step = movementSpeed * Time.deltaTime; // calculate speed to move (mvoement)
+
+        direction = (nextPosition - transform.position).normalized;
+
+        lookRotation = Quaternion.LookRotation(direction);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
         transform.position = Vector3.MoveTowards(transform.position, nextPosition, step);
 
         // Check if the position of the cube and sphere are approximately equal.
@@ -70,7 +82,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
 
     private void CalculateScore()
     {
-        int score = Maths.CalculateBirdShotScore(timeOnScreen, speed);
+        int score = Maths.CalculateBirdShotScore(timeOnScreen, movementSpeed);
         GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
     }
 
@@ -79,23 +91,27 @@ public class Duck : MonoBehaviour, IPlayerObserver
     IEnumerator FlyAwayTimer()
     {
         yield return new WaitForSeconds(duration);
+        if(playerState != PlayerState.DUCK_SHOT)
         BroadCastManager.Instance.DuckFlyingAway.Invoke();
-        StartCoroutine(DespawnTimer(PlayerState.DUCK_MISSED)); 
+        StartCoroutine(DespawnTimer());
+        
     }
     //Time taken for animations or to fly off screen
-    IEnumerator DespawnTimer(PlayerState state)
+    IEnumerator DespawnTimer()
     {
-    
-        if (state == PlayerState.DUCK_SHOT)
+
+        if (playerState == PlayerState.DUCK_SHOT)
         {
             yield return new WaitForSeconds(2);
             //Death animations
-            //set pos to go to on death
+            BroadCastManager.Instance.DuckDead.Invoke();
+            //SpawnManager.Instance.DespawnBird();
         }
         else
         {
+            //Rocket ship to mars :P
             nextPosition = new Vector3(transform.position.x, 100, transform.position.z);
-            speed = 50;
+            movementSpeed = 50;
 
             yield return new WaitForSeconds(1);
             FlyAway();
@@ -103,17 +119,18 @@ public class Duck : MonoBehaviour, IPlayerObserver
         
 
     }
-
-    public void OnNotify(PlayerState state)
+    void IPlayerObserver.OnNotify(PlayerState state)
     {
         if (this.isActiveAndEnabled) //Could use ID but this should work fine, avoids calling behaviour on all pooled objects
-
+        {
+            playerState = state;
             switch (state)
             {
                 case PlayerState.DUCK_SHOT:
                     CalculateScore();
-                    DespawnTimer(state);
+                    StartCoroutine(DespawnTimer());
                     break;
             }
+        }
     }
 }

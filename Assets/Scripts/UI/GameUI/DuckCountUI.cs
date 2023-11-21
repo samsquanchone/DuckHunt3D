@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class DuckCountUI : MonoBehaviour, IRoundObserver
+public class DuckCountUI : MonoBehaviour, IRoundObserver, IPlayerObserver
 {
     const string prefix = "Duck Count: ";
     const string suffix = "/10";
@@ -124,6 +124,16 @@ public class DuckCountUI : MonoBehaviour, IRoundObserver
         ResetDuckCount();
     }
 
+    void IPlayerObserver.OnNotify(PlayerState state)
+    {
+        switch (state)
+        {
+            case PlayerState.DUCK_SHOT:
+                DuckHit();
+                break;
+        }
+    }
+
     void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         switch (state)
@@ -140,9 +150,7 @@ public class DuckCountUI : MonoBehaviour, IRoundObserver
                 isRoundInterim = false;
                 ResetDuckCount();
                 break;
-            case RoundState.BIRDHIT:
-                DuckHit();
-                break;
+
             case RoundState.BIRDFLYAWAY:
                 DuckMissed();
                 break;
