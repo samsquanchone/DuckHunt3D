@@ -34,7 +34,7 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Input.touchCount > 0)
             if (Input.GetTouch(0).phase == TouchPhase.Began && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) //Check if finger down and if it is not pressing button
             {
@@ -58,17 +58,15 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
                 if (hit.collider.CompareTag("Duck"))
                 {
                     Debug.Log("Duck Hit");
-                    this.NotifyObservers(PlayerState.DUCK_SHOT);
-                    PoolingManager.Instance.CoolObject(hit.collider.gameObject, PoolingObjectType.DUCK); //Could you observer pattern here, but we have the gameobject to return to pool, so let's not overcomplicate it and can just use the singleton!
-
+                    NotifyObservers(PlayerState.DUCK_SHOT);
                 }
                 else
-            {
+                {
 
-                Debug.Log("Duck Missed");
-                NotifyObservers(PlayerState.DUCK_MISSED);
-            }
-               
+                    Debug.Log("Duck Missed");
+                    NotifyObservers(PlayerState.DUCK_MISSED);
+                }
+
             }
             else
             {

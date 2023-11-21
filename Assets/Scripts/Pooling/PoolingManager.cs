@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 //Set spawn types here: e.g. duck, rare duck
-public enum PoolingObjectType {DUCK};
+public enum PoolingObjectType {DUCK, RAREDUCK};
 
 /// <summary>
 /// Custom pooling manager, allows for this manager to handle any number of objects 
@@ -39,7 +39,17 @@ public class PoolingManager : MonoBehaviour
         {
             GameObject objInstance = null;
             objInstance = Instantiate(info.prefab, info.container.transform);
-            objInstance.GetComponent<Duck>().Innit(); //Used to intialise anything we need before set to not active a.k.a a custom start function!
+
+            if (objInstance.GetComponent<Duck>() != null)
+            {
+                objInstance.GetComponent<Duck>().Innit(); //Used to intialise anything we need before set to not active a.k.a a custom start function!
+            }
+
+            else 
+            {
+                objInstance.GetComponent<RareDuck>().Innit(); //Used to intialise anything we need before set to not active a.k.a a custom start function! For large various pool types should change how the pool vars are init
+            }
+           
             objInstance.gameObject.SetActive(false);
             objInstance.transform.position = defaultPos;
             info.pool.Add(objInstance);

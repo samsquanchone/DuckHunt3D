@@ -3,35 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum RoundState { BIRDFLYAWAY, BIRDHIT, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM }; //Change all to duck or bird, be consistent
+public enum RoundState { BIRDFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM, DUCKNOTACTIVE }; //Change all to duck or bird, be consistent
 public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 {
     [SerializeField] private int shots = 3;
     [SerializeField] private int birdsHit = 0;
-    [SerializeField] private int birdsNeeded = 5;
+    [SerializeField] private int birdsNeeded = 6;
     [SerializeField] private int birdCount = 0; //For checking how many birds have been spawned this round
     int round = 1;
     bool isPerfectRound = false;
 
     [SerializeField] private UnityEvent flyBirdAway;
+    UnityAction newDuckAction; //May be able to remove and allow bird missed to just be handled by the event created
+    
 
     public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are set to observers regardless of if they need them
     public List<IPlayerObserver> PlayerObservers { get; set; }
 
     private void Start()
     {
+        newDuckAction += CheckCount;
+
         RoundObservers = BroadCastManager.Instance.GetRoundObservers();
+        BroadCastManager.Instance.DuckFlownAway.AddListener(newDuckAction);
+        BroadCastManager.Instance.DuckDead.AddListener(newDuckAction);
         BroadCastManager.Instance.AddPlayerObserver(this);
+
+
+        StartCoroutine(StartRoundTimer());
+       
+    }
+
+    IEnumerator StartRoundTimer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        NotifyObservers(RoundState.NEWROUND, round, birdsNeeded, isPerfectRound);
+
+        yield return new WaitForSeconds(0.5f);
         CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }
 
 
     public void BirdHit()
     {
+        NotifyObservers(RoundState.DUCKNOTACTIVE, round, birdsNeeded, isPerfectRound); 
         shots -= 1;
         birdsHit += 1;
-        NotifyObservers(RoundState.BIRDHIT, round, birdsNeeded, isPerfectRound);
-        CheckCount();
+    
+       // CheckCount();
 
     }
 
@@ -64,7 +83,8 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     {
         if (shots == 0)
         {
-            flyBirdAway.Invoke();
+            BroadCastManager.Instance.DuckFlyingAway.Invoke();
+            NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
             ResetAmmo();
         }
     }
@@ -83,6 +103,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         }
         else
         {
+            NotifyObservers(RoundState.GAMEOVER, round, birdsNeeded, isPerfectRound);
             GameManager.Instance.GameOver();
         }
     }
@@ -137,7 +158,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     IEnumerator RoundInterim()
     {
         NotifyObservers(RoundState.ROUNDINTERIM, round, birdsNeeded, isPerfectRound);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3.5f);
         NewRound();
     }
 

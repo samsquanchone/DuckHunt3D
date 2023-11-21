@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Will be resposible for defining all subjects and act as a 'hub' for listeners to subscribe to various subjects!
@@ -43,6 +44,22 @@ public interface IRoundObserver
 }
 #endregion
 
+#region Bird
+public interface IDuckSubject
+{
+    List<IDuckObserver> BirdObservers { get; set; }
+
+    public void AddObserver(IDuckObserver observer);
+    public void RemoveObserver(IDuckObserver observer);
+    public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
+}
+
+public interface IDuckObserver
+{
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
+}
+#endregion
+
 public class BroadCastManager : MonoBehaviour
 {
     //Singleton creation shorthand
@@ -52,6 +69,11 @@ public class BroadCastManager : MonoBehaviour
     //Lists of subject observers
     private List<IPlayerObserver> PlayerObservers = new();
     private List<IRoundObserver> RoundObservers = new();
+
+    //Unity based observer pattern (just to show another way of doing it!) Donwside is Unity uses reflection for events, so called methods on notified cannot be private like with the interface method!
+    public UnityEvent DuckFlyingAway;
+    public UnityEvent DuckFlownAway;
+    public UnityEvent DuckDead;
 
     private void Awake()
     {
@@ -77,5 +99,7 @@ public class BroadCastManager : MonoBehaviour
     {
         return RoundObservers;
     }
+
+   
 
 }

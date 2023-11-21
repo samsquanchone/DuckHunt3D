@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
 {
-    
    
     [SerializeField] private List<GameObject> ammoUIObjects = new();
     int ammoCount = 2; //Start from 2 as we will have list as 0 index start
@@ -18,12 +17,6 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
         BroadCastManager.Instance.AddPlayerObserver(this);
         BroadCastManager.Instance.AddRoundObserver(this);
         alphaColour = ammoUIObjects[0].GetComponent<Image>().color;
-    }
-
-    public void OnNotify(PlayerState state)
-    {
-        //Don't really need a switch case here as we want to notify when we miss and hit to decrease the ammo count
-        DecreaseAmmoCount();
     }
 
     private void DecreaseAmmoCount()
@@ -45,14 +38,18 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
         ammoCount = 2;
     }
 
+
+    void IPlayerObserver.OnNotify(PlayerState state)
+    {
+        //Don't really need a switch case here as we want to notify when we miss and hit to decrease the ammo count
+        DecreaseAmmoCount();
+    }
+
     void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         switch (state)
         {
-            case RoundState.DUCKSPAWNINTERIM:
-
-                break;
-
+           
             case RoundState.DUCKSPAWNING:
                 ResetAmmo();
                 break;
@@ -60,12 +57,7 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
             case RoundState.NEWROUND:
                 ResetAmmo();
                 break;
-            case RoundState.BIRDHIT:
-                
-                break;
-            case RoundState.BIRDFLYAWAY:
-                
-                break;
+           
         }
     }
 }
