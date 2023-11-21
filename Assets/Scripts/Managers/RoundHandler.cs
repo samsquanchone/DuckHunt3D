@@ -8,19 +8,24 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 {
     [SerializeField] private int shots = 3;
     [SerializeField] private int birdsHit = 0;
-    [SerializeField] private int birdsNeeded = 5;
+    [SerializeField] private int birdsNeeded = 6;
     [SerializeField] private int birdCount = 0; //For checking how many birds have been spawned this round
     int round = 1;
     bool isPerfectRound = false;
 
     [SerializeField] private UnityEvent flyBirdAway;
 
+    UnityAction newDuckAction; //May be able to remove and allow bird missed to just be handled by the event created
+
     public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are set to observers regardless of if they need them
     public List<IPlayerObserver> PlayerObservers { get; set; }
 
     private void Start()
     {
+        newDuckAction += BirdTimedOUt;
+
         RoundObservers = BroadCastManager.Instance.GetRoundObservers();
+        BroadCastManager.Instance.DuckFlownAway.AddListener(newDuckAction);
         BroadCastManager.Instance.AddPlayerObserver(this);
         CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
     }

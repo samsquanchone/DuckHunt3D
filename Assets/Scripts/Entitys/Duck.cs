@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+enum DuckState {DYING, DEAD, FLYINGAWAY, FLEWAWAY }
+
 public class Duck : MonoBehaviour, IPlayerObserver
 {
 
@@ -13,6 +15,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     float timeOnScreen = 1;
 
     UnityAction birdFlewAway;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     public void Innit()
     {
         BroadCastManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
+        
     }
 
     private void OnEnable()
@@ -61,7 +65,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
 
     public void FlyAway()
     {
-        birdFlewAway.Invoke();
+        BroadCastManager.Instance.DuckFlownAway.Invoke();
     }
 
     private void CalculateScore()
@@ -70,10 +74,33 @@ public class Duck : MonoBehaviour, IPlayerObserver
         GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
     }
 
+
+    //Time taken for duck to time out and begin the fly away offscreen sequence
     IEnumerator FlyAwayTimer()
     {
         yield return new WaitForSeconds(duration);
-        FlyAway();
+        BroadCastManager.Instance.DuckFlyingAway.Invoke();
+        StartCoroutine(DespawnTimer(PlayerState.DUCK_MISSED)); 
+    }
+    //Time taken for animations or to fly off screen
+    IEnumerator DespawnTimer(PlayerState state)
+    {
+    
+        if (state == PlayerState.DUCK_SHOT)
+        {
+            yield return new WaitForSeconds(2);
+            //Death animations
+            //set pos to go to on death
+        }
+        else
+        {
+            nextPosition = new Vector3(transform.position.x, 100, transform.position.z);
+            speed = 50;
+
+            yield return new WaitForSeconds(1);
+            FlyAway();
+        }
+        
 
     }
 
@@ -85,6 +112,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
             {
                 case PlayerState.DUCK_SHOT:
                     CalculateScore();
+                    DespawnTimer(state);
                     break;
             }
     }

@@ -10,12 +10,17 @@ public class SpawnManager : MonoBehaviour
 
     GameObject _obj;
 
-    [SerializeField] UnityEvent despawnBird;
+    UnityAction DespawnBirdAction;
   
     // Start is called before the first frame update
     void Awake()
     {
         m_instance = this;
+    }
+    private void Start()
+    {
+        DespawnBirdAction += DespawnBird;
+        BroadCastManager.Instance.DuckFlownAway.AddListener(DespawnBirdAction);
     }
 
     public void SpawnBird()
@@ -42,7 +47,6 @@ public class SpawnManager : MonoBehaviour
     public void DespawnBird()
     {
         PoolingManager.Instance.CoolObject(_obj, PoolingObjectType.DUCK);
-        despawnBird.Invoke();
     }
 
     
