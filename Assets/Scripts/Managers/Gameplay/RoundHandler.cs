@@ -84,7 +84,8 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         if (shots == 0)
         {
             BroadCastManager.Instance.DuckFlyingAway.Invoke();
-            NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.DUCKNOTACTIVE, round, birdsNeeded, isPerfectRound);
+            //NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
             ResetAmmo();
         }
     }
@@ -136,7 +137,6 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         if (birdsHit == 10)
         {
             isPerfectRound = true;
-            GameManager.Instance.RoundBonus();
         }
         else
         {
@@ -146,7 +146,6 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 
     IEnumerator DuckSpawnInterim()
     {
-        
         yield return new WaitForSeconds(1);
         ResetAmmo();
         NotifyObservers(RoundState.DUCKSPAWNING, round, birdsNeeded, isPerfectRound);

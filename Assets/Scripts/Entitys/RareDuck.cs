@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RareDuck :  Duck, IPlayerObserver
+public class RareDuck :  Duck, IPlayerObserver, IDuckSubject
 {
     
 
@@ -24,7 +24,9 @@ public class RareDuck :  Duck, IPlayerObserver
 
     protected override void CalculateScore()
     {
+        
         int score = Maths.CalculateBirdShotScore(timeOnScreen, movementSpeed) + 500; //Just give a nice bonus for shooting a rare bird!
-        GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
+        NotifyObservers(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
+      // GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
     }
 }

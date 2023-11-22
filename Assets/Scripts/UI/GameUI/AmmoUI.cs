@@ -10,6 +10,8 @@ public class AmmoUI : MonoBehaviour, IPlayerObserver, IRoundObserver
     [SerializeField] private List<GameObject> ammoUIObjects = new();
     int ammoCount = 2; //Start from 2 as we will have list as 0 index start
 
+
+
     Color alphaColour;
 
     void Start()

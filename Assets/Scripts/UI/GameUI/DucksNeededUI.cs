@@ -15,8 +15,7 @@ public class DucksNeededUI : MonoBehaviour, IRoundObserver
 
     Color alphaColour;
 
-    int duckStartNumber = 6; //Could change depending on game mode ect
-    int duckNeeded = 6; //Can remove this once we get the actual UI in!
+    int duckNeeded = 6;
 
     private void Start()
     {

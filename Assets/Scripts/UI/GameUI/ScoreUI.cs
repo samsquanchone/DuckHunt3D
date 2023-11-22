@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro; 
 
-public class ScoreUI : MonoBehaviour
+
+/// <summary>
+/// Will be used to handle the overal score and the UI for it
+/// </summary>
+public class ScoreUI : MonoBehaviour, IDuckObserver, IRoundObserver
 {
     private TMP_Text overalScoreText;
     const string overalScoreSuffix = "\nScore";
@@ -11,31 +15,63 @@ public class ScoreUI : MonoBehaviour
     [SerializeField] TMP_Text popUpScoreText;
     const string popUpScorePrefix = "+";
 
+    int totalScore = 0;
+
+
     private void Start()
     {
+        //Set liteners to subjects
+        BroadCastManager.Instance.AddDuckObserver(this);
+        BroadCastManager.Instance.AddRoundObserver(this);
+
         overalScoreText = GetComponent<TMP_Text>(); //Get ref to TMP text
         overalScoreText.SetText(0 + overalScoreSuffix);
     }
 
-    public void SetScore(int score)
+    private void SetScore(int score)
     {
-       
-        overalScoreText.SetText(score + overalScoreSuffix);
+        totalScore += score;
+        overalScoreText.SetText(totalScore + overalScoreSuffix);
     }
 
-    public void SetPopUpScore(int score, Vector2 pos)
+    private void SetPopUpScore(int score, Vector2 pos)
     {
         popUpScoreText.SetText(popUpScorePrefix + score);
         popUpScoreText.transform.position= pos;
         popUpScoreText.gameObject.SetActive(true);
 
         StartCoroutine(PopUpTimer());
-       
+    }
+
+    void SetFinalScore(int round)
+    {
+        //Set persistent values for final score
+        PersistentData.SetGameResults(totalScore, round);
     }
 
     IEnumerator PopUpTimer()
     {
         yield return new WaitForSeconds(0.5f);
         popUpScoreText.gameObject.SetActive(false);
+    }
+
+    public void OnNotify(int score, Vector2 position)
+    {
+        SetPopUpScore(score, position);
+        SetScore(score);
+    }
+
+    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+    {
+        switch (state)
+        {
+            case RoundState.GAMEOVER:
+                SetFinalScore(_currentRound); //Set final values 
+                    break;
+            case RoundState.ROUNDINTERIM:
+                if (_isPerfectRound) { SetScore(1000); } //Set perfect round bonus to score
+                break;
+                
+        }
     }
 }

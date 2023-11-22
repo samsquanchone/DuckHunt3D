@@ -45,18 +45,21 @@ public interface IRoundObserver
 #endregion
 
 #region Bird
+/// <summary>
+/// Will be a very basic subject and really just used to pass the score to UI / score script 
+/// </summary>
 public interface IDuckSubject
 {
-    List<IDuckObserver> BirdObservers { get; set; }
+    List<IDuckObserver> DuckObservers { get; set; }
 
-    public void AddObserver(IDuckObserver observer);
-    public void RemoveObserver(IDuckObserver observer);
-    public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
+    public void AddObservers();
+    public void RemoveObservers();
+    public void NotifyObservers(int score, Vector2 position);
 }
 
 public interface IDuckObserver
 {
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
+    public void OnNotify(int score, Vector2 position);
 }
 #endregion
 
@@ -69,6 +72,7 @@ public class BroadCastManager : MonoBehaviour
     //Lists of subject observers
     private List<IPlayerObserver> PlayerObservers = new();
     private List<IRoundObserver> RoundObservers = new();
+    private List<IDuckObserver> DuckObservers = new();
 
     //Unity based observer pattern (just to show another way of doing it!) Donwside is Unity uses reflection for events, so called methods on notified cannot be private like with the interface method!
     public UnityEvent DuckFlyingAway;
@@ -105,6 +109,23 @@ public class BroadCastManager : MonoBehaviour
         return RoundObservers;
     }
 
-   
+    public void AddDuckObserver(IDuckObserver observer)
+    {
+        DuckObservers.Add(observer);
+    }
+
+    public List<IDuckObserver> GetDuckObservers()
+    {
+        return DuckObservers;
+    }
+
+
+    //Remove listeners on destroy
+    private void OnDestroy()
+    {
+        DuckFlyingAway.RemoveAllListeners();
+        DuckFlownAway.RemoveAllListeners();
+        DuckDead.RemoveAllListeners();
+    }
 
 }

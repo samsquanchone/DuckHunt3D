@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-enum DuckState {DYING, DEAD, FLYINGAWAY, FLEWAWAY }
-
-
 
 //Could add interface for further development to ensure that certain functions get implemented, then mark any to override as virtual. But for now this will act as a base class
-public class Duck : MonoBehaviour, IPlayerObserver
+public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 {
 
     [SerializeField] protected float movementSpeed;
@@ -20,13 +17,14 @@ public class Duck : MonoBehaviour, IPlayerObserver
     protected float duration = 5f;
     protected float timeOnScreen = 1;
 
-   
-
     protected DuckAnimController duckAnim; //Could use events but it is on same object so will just used get component method
 
     protected PlayerState playerState = PlayerState.DUCK_MISSED; //Used as a flag so the bird is not flown away during death animation
 
-    
+    public List<IDuckObserver> DuckObservers { get; set; }
+
+    protected UnityAction flyDuckAway; //Used to manually fly duck away if shots run out
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -36,8 +34,11 @@ public class Duck : MonoBehaviour, IPlayerObserver
     //Called when pool is filled as we want to add this as player observer, but is being set to inactive so failing to register as observer1
     public void Innit()
     {
+        AddObservers();
         BroadCastManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
-        
+        flyDuckAway += ManuallyFlyDuckAway;
+
+        BroadCastManager.Instance.DuckFlyingAway.AddListener(flyDuckAway);
     }
 
     protected void OnEnable()
@@ -106,10 +107,15 @@ public class Duck : MonoBehaviour, IPlayerObserver
     {
         //Calculate the score based off time on screen and movement, calculations done in a static utillity class I created for abstracting math based code
         int score = Maths.CalculateBirdShotScore(timeOnScreen, movementSpeed);
-        GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
+        NotifyObservers(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
+        //GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
     }
 
-
+    protected void ManuallyFlyDuckAway()
+    {
+        if(isActiveAndEnabled)
+        StartCoroutine(DespawnTimer());
+    }
     //Time taken for duck to time out and begin the fly away offscreen sequence
     protected IEnumerator FlyAwayTimer()
     {
@@ -153,7 +159,6 @@ public class Duck : MonoBehaviour, IPlayerObserver
         
 
     }
-
     //Can't use polymorphism on this interface function, so remember to add if making new duck types!
     void IPlayerObserver.OnNotify(PlayerState state)
     {
@@ -168,5 +173,31 @@ public class Duck : MonoBehaviour, IPlayerObserver
                     break;
             }
         }
+    }
+
+    public void AddObservers()
+    {
+        DuckObservers = BroadCastManager.Instance.GetDuckObservers();
+    }
+
+    public void RemoveObservers()
+    {
+        DuckObservers.Clear();
+    }
+
+    public void NotifyObservers(int score, Vector2 position)
+    {
+        if (isActiveAndEnabled)
+        {
+            foreach (var observer in DuckObservers)
+            {
+                observer.OnNotify(score, position);
+            }
+        }
+    }
+
+    void OnDestroy()
+    {
+        RemoveObservers();
     }
 }
