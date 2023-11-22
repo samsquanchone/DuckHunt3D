@@ -25,6 +25,8 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 
     protected UnityAction flyDuckAway; //Used to manually fly duck away if shots run out
 
+    bool shouldGetPosition = true;
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -43,6 +45,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 
     protected void OnEnable()
     {
+        shouldGetPosition = true;
         duration = 5f;
         timeOnScreen = 1; //We will just start from 1 so we don't devide by 0
         movementSpeed = Maths.CalculateBirdSpeed(GameManager.Instance.GetRound()); //Calculate a random duck speed based off the current round
@@ -89,11 +92,9 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 
     protected void GetNextFlyToPosition()
     {
-        if (playerState != PlayerState.DUCK_SHOT)
+        if (shouldGetPosition)
         {
-            nextPosition.x = Maths.GetRandomPosition3D().X;
-            nextPosition.y = Maths.GetRandomPosition3D().Y;
-            nextPosition.z = Maths.GetRandomPosition3D().Z;
+            nextPosition = new(Maths.GetRandomPosition3D().X, Maths.GetRandomPosition3D().Y, Maths.GetRandomPosition3D().Z);
         }
     }
 
@@ -108,7 +109,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
         //Calculate the score based off time on screen and movement, calculations done in a static utillity class I created for abstracting math based code
         int score = Maths.CalculateBirdShotScore(timeOnScreen, movementSpeed);
         NotifyObservers(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
-        //GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
+      
     }
 
     protected void ManuallyFlyDuckAway()
@@ -140,20 +141,24 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
             duckAnim.SetAnimState(DuckAnimState.FALLING); //Set duck death animation to trigger
             transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.y, 0);
             movementSpeed = 8;
+            shouldGetPosition = false;
 
             yield return new WaitForSeconds(2);
-            //Death animations
+          
             BroadCastManager.Instance.DuckDead.Invoke();
-            playerState = PlayerState.DUCK_MISSED; //A bit confusing this, but the flag is local and just saves having to add another flag, so serves its purpose
+
+            playerState = PlayerState.DUCK_MISSED; //Is just an internal flag to make sure if player does not click inbetween rounds the death sequence is not triggered instead of flyaway
+            
             
         }
         else
         {
             //Rocket ship to mars :P
-            nextPosition = new Vector3(transform.position.x, 100, transform.position.z);
-            movementSpeed = 50;
+            nextPosition = new(Maths.GetDespawnPosition().X, Maths.GetDespawnPosition().Y, Maths.GetDespawnPosition().Z);
+            shouldGetPosition = false; ///Just to make sure it does not get another position before despawn
+            movementSpeed = movementSpeed += 5;
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2f);
             FlyAway();
         }
         

@@ -24,9 +24,7 @@ public class RareDuck :  Duck, IPlayerObserver, IDuckSubject
 
     protected override void CalculateScore()
     {
-        
         int score = Maths.CalculateBirdShotScore(timeOnScreen, movementSpeed) + 500; //Just give a nice bonus for shooting a rare bird!
         NotifyObservers(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
-      // GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
     }
 }

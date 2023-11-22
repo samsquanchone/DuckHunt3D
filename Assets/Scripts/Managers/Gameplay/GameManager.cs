@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1; //Just incase user goes to main menu and then play's again
-        Maths.SetBounds(new System.Numerics.Vector2(-5, 5), new System.Numerics.Vector2(0.9f, 10), new System.Numerics.Vector2(-7, 7)); 
+        Maths.SetBounds(new System.Numerics.Vector2(-5, 5), new System.Numerics.Vector2(0.9f, 10), new System.Numerics.Vector2(-7, 1)); 
     }
 
   
