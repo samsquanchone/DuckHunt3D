@@ -104,6 +104,7 @@ public class Duck : MonoBehaviour, IPlayerObserver
     //Will use polymorphism to override this function for rare duck to allow it add bonus points!
     virtual protected void CalculateScore()
     {
+        //Calculate the score based off time on screen and movement, calculations done in a static utillity class I created for abstracting math based code
         int score = Maths.CalculateBirdShotScore(timeOnScreen, movementSpeed);
         GameManager.Instance.IncrementScore(score, new Vector2(this.transform.position.x, this.transform.transform.position.y));
     }

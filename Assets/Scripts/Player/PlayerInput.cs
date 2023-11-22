@@ -10,7 +10,7 @@ public enum PlayerState { DUCK_SHOT, DUCK_MISSED };
 
 public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
 {
-    public List<IPlayerObserver> PlayerObservers { get; set; }
+    public List<IPlayerObserver> PlayerObservers { get; set;}
 
     RoundState roundState; //Will be used as a flag by the player so they can't shoot inbetween rounds
 
@@ -27,8 +27,8 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
     IEnumerator LateStart()
     {
         yield return new WaitForSeconds(0.2f);
-        PlayerObservers = new(BroadCastManager.Instance.GetPlayerObservers()); //Set up 
-
+        AddObservers();
+  
     }
 
     // Update is called once per frame
@@ -77,10 +77,16 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
         }
     }
 
-
-    public void AddObserver(IPlayerObserver observer)
+    void OnDestroy()
     {
-        PlayerObservers.Add(observer);
+        //Remove observers on destroy
+        RemoveObservers();
+    }
+
+    //Usually I have the Interface type as an argument, but for this game it will all be done on start, so will just do it through the broadcast manager
+    public void AddObservers()
+    {
+        PlayerObservers = BroadCastManager.Instance.GetPlayerObservers(); //Set up without cloning (new), as we want them as ref
     }
 
     public void NotifyObservers(PlayerState state)
@@ -92,14 +98,18 @@ public class PlayerInput : MonoBehaviour, IPlayerSubject, IRoundObserver
         }
     }
 
-    public void RemoveObserver(IPlayerObserver observer)
+    //Getting the list by reference as it is non primitive, so will clear list here
+    public void RemoveObservers()
     {
-        PlayerObservers.Remove(observer);
+        PlayerObservers.Clear();
     }
 
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
     {
         roundState = state;
     }
+
+    
 }
+
 

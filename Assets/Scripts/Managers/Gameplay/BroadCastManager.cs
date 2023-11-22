@@ -11,10 +11,10 @@ using UnityEngine.Events;
 #region Player
 public interface IPlayerSubject
 {
-    List<IPlayerObserver> PlayerObservers { get; set; }
+    List<IPlayerObserver> PlayerObservers { get; }
 
-    public void AddObserver(IPlayerObserver observer);
-    public void RemoveObserver(IPlayerObserver observer);
+    public void AddObservers();
+    public void RemoveObservers();
     public void NotifyObservers(PlayerState state);
 }
 
@@ -33,8 +33,8 @@ public interface IRoundSubject
 {
     List<IRoundObserver> RoundObservers { get; set; }
 
-    public void AddObserver(IRoundObserver observer);
-    public void RemoveObserver(IRoundObserver observer);
+    public void AddObservers();
+    public void RemoveObservers();
     public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound);
 }
 
@@ -88,6 +88,11 @@ public class BroadCastManager : MonoBehaviour
     public List<IPlayerObserver> GetPlayerObservers()
     {
         return PlayerObservers;
+    }
+
+    public void RemovePlayerObservers()
+    {
+        //PlayerObservers.Clear();
     }
 
     public void AddRoundObserver(IRoundObserver observer)

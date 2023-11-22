@@ -18,13 +18,13 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     
 
     public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are set to observers regardless of if they need them
-    public List<IPlayerObserver> PlayerObservers { get; set; }
+   
 
     private void Start()
     {
         newDuckAction += CheckCount;
 
-        RoundObservers = BroadCastManager.Instance.GetRoundObservers();
+        AddObservers();
         BroadCastManager.Instance.DuckFlownAway.AddListener(newDuckAction);
         BroadCastManager.Instance.DuckDead.AddListener(newDuckAction);
         BroadCastManager.Instance.AddPlayerObserver(this);
@@ -150,7 +150,6 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         yield return new WaitForSeconds(1);
         ResetAmmo();
         NotifyObservers(RoundState.DUCKSPAWNING, round, birdsNeeded, isPerfectRound);
-        SpawnManager.Instance.SpawnBird();
         birdCount += 1;
         NotifyObservers(RoundState.DUCKACTIVE, round, birdsNeeded, isPerfectRound); //Will be used as flag by player
     }
@@ -177,15 +176,18 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         }
     }
 
+
     //Anything not wanting to use the broadcast manager can call this function to add observer
-    public void AddObserver(IRoundObserver observer) //MAYBE CHAage to initialise observers with no argument! called on start
+    public void AddObservers() 
     {
-        RoundObservers.Add(observer);
+        RoundObservers = BroadCastManager.Instance.GetRoundObservers();
     }
 
-    public void RemoveObserver(IRoundObserver observer)
+
+    //Will just remove everything on destroy, should be GC'd, but C++ habbits die hard. The list also obtained by ref as we wont clone it (new), so should destroy the list in broadcast manager!
+    public void RemoveObservers()
     {
-        RoundObservers.Remove(observer);
+        RoundObservers.Clear();
     }
 
     public void NotifyObservers(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)

@@ -3,25 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SpawnManager : MonoBehaviour
+
+/*Called a manager as it was originally using the singleton pattern, however through some refactoring no static instance access was required with this script
+ * Singletons are a popular pattern in game design, but they do encourage coupling, which is why I would choose another pattern if possible
+*/
+
+
+/// <summary>
+/// This script handles getting and returning objects to the pool, and does this through accessing the pooling manager singleton
+/// It is notified by the broadast manager Duckflown away and duck dead, which trigger the spawn bird function.
+/// It is also notified by the interface bsaed observer approach, being IRoundObserver, notifying this class when duck should spawn. 
+/// </summary>
+
+public class SpawnManager : MonoBehaviour, IRoundObserver
 {
-    public static SpawnManager Instance => m_instance;
-    private static SpawnManager m_instance;
 
-    GameObject _obj;
+    GameObject _obj; //Current bird active 
 
-    UnityAction DespawnBirdAction;
+    UnityAction DespawnBirdAction; //Action for spawning bird
 
     PoolingObjectType poolingObjectType; //Used to determine which duck to spawn
   
-    // Start is called before the first frame update
-    void Awake()
-    {
-        m_instance = this;
-    }
+   
     private void Start()
     {
         DespawnBirdAction += DespawnBird;
+
+        //Set up what this class will listen to 
+        BroadCastManager.Instance.AddRoundObserver(this);
         BroadCastManager.Instance.DuckFlownAway.AddListener(DespawnBirdAction);
         BroadCastManager.Instance.DuckDead.AddListener(DespawnBirdAction);
     }
@@ -63,6 +72,14 @@ public class SpawnManager : MonoBehaviour
         PoolingManager.Instance.CoolObject(_obj, poolingObjectType);
     }
 
-    
+    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+    {
+        switch (state)
+        {
+            case RoundState.DUCKSPAWNING:
+                SpawnBird();
+                break;
+        }
 
+    }
 }
