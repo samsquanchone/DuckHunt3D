@@ -20,12 +20,14 @@ public class PoolingManager : MonoBehaviour
     private Vector3 defaultPos = new Vector3(0, 0, 0);
 
 
-
     // Start is called before the first frame update
     void Start()
     {
+        //Check there is only one instance of singleton
+        if(m_instance == null)
         m_instance = this;
 
+        //Fill the pool
         for (int i = 0; i < listOfPool.Count; i++)
         {
             FillPool(listOfPool[i]);
@@ -39,17 +41,6 @@ public class PoolingManager : MonoBehaviour
         {
             GameObject objInstance = null;
             objInstance = Instantiate(info.prefab, info.container.transform);
-
-            if (objInstance.GetComponent<Duck>() != null)
-            {
-                objInstance.GetComponent<Duck>().Innit(); //Used to intialise anything we need before set to not active a.k.a a custom start function!
-            }
-
-            else 
-            {
-                objInstance.GetComponent<RareDuck>().Innit(); //Used to intialise anything we need before set to not active a.k.a a custom start function! For large various pool types should change how the pool vars are init
-            }
-           
             objInstance.gameObject.SetActive(false);
             objInstance.transform.position = defaultPos;
             info.pool.Add(objInstance);
@@ -87,9 +78,7 @@ public class PoolingManager : MonoBehaviour
 
         pool.Add(obj);
 
-
     }
-
 
     private PoolInfo GetPoolByType(PoolingObjectType type)
     {
@@ -110,7 +99,7 @@ public class PoolInfo
 {
     public PoolingObjectType type; //Enum type
     public int amount; //Amount to pool
-    public GameObject prefab;
+    public GameObject prefab; 
     public GameObject container;
-    public List<GameObject> pool = new List<GameObject>();
+    public List<GameObject> pool = new();
 }

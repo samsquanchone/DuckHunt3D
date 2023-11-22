@@ -9,6 +9,10 @@ using UnityEngine.Events;
 /// 
 
 #region Player
+/// <summary>
+/// Enum used with the event system so difffrent parts of the code base can make decisions on an event invoke based on the enum state passed with the invoke of dialogue obserbers
+/// </summary>
+public enum PlayerState { DUCK_SHOT, DUCK_MISSED };
 public interface IPlayerSubject
 {
     List<IPlayerObserver> PlayerObservers { get; }
@@ -29,6 +33,7 @@ public interface IPlayerObserver
 #endregion
 
 #region Round
+public enum RoundState { DUCKFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM, DUCKNOTACTIVE };
 public interface IRoundSubject
 {
     List<IRoundObserver> RoundObservers { get; set; }

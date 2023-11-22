@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum RoundState { BIRDFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM, DUCKNOTACTIVE }; //Change all to duck or bird, be consistent
+
 public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 {
     [SerializeField] private int shots = 3;
@@ -13,11 +13,9 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
     int round = 1;
     bool isPerfectRound = false;
 
-    [SerializeField] private UnityEvent flyBirdAway;
     UnityAction newDuckAction; //May be able to remove and allow bird missed to just be handled by the event created
     
-
-    public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are set to observers regardless of if they need them
+    public List<IRoundObserver> RoundObservers { get; set; } //Did originally use events, but keeping track of observers was a bit obscure, so refactored and favoured this method of interface based subjects/observers. Downside is variables are sentt to observers regardless of if they need them
    
 
     private void Start()
@@ -49,9 +47,6 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
         NotifyObservers(RoundState.DUCKNOTACTIVE, round, birdsNeeded, isPerfectRound); 
         shots -= 1;
         birdsHit += 1;
-    
-       // CheckCount();
-
     }
 
     public void BirdMissed()
@@ -62,7 +57,7 @@ public class RoundHandler : MonoBehaviour, IRoundSubject, IPlayerObserver
 
     public void BirdTimedOUt()
     {
-        NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
+        NotifyObservers(RoundState.DUCKFLYAWAY, round, birdsNeeded, isPerfectRound);
         CheckCount();
     }
 

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.Math;
 
 
-/*Called a manager as it was originally using the singleton pattern, however through some refactoring no static instance access was required with this script
+/*Called a manager as it was originally using the singleton pattern, however through some refactoring no static instance access were required with this script
  * Singletons are a popular pattern in game design, but they do encourage coupling, which is why I would choose another pattern if possible
 */
 
@@ -41,7 +42,6 @@ public class SpawnManager : MonoBehaviour, IRoundObserver
         if (randomNumber == 19)
         {
             poolingObjectType = PoolingObjectType.RAREDUCK;
-           
            
         }
         else

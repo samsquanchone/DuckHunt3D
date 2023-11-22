@@ -51,7 +51,7 @@ public class ScoreUI : MonoBehaviour, IDuckObserver, IRoundObserver
 
     IEnumerator PopUpTimer()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         popUpScoreText.gameObject.SetActive(false);
     }
 

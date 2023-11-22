@@ -1,0 +1,20 @@
+{
+    "name": "GamePlay",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a569dcf976aeeef4e9b1bbb6a530c936"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility.Math;
 
 public class RareDuck :  Duck, IPlayerObserver, IDuckSubject
 {
     
-
     //Can't use polymorphism on this interface function, so remember to add if making new duck types!
     void IPlayerObserver.OnNotify(PlayerState state)
     {

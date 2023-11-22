@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.Math;
 
 
 //Could add interface for further development to ensure that certain functions get implemented, then mark any to override as virtual. But for now this will act as a base class
@@ -14,8 +15,8 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
     protected Vector3 nextPosition; //Could use transform, but we only need the .position so we can just use a vector 3
     protected Vector3 direction;
 
-    protected float duration = 5f;
-    protected float timeOnScreen = 1;
+    protected float duration = 5f; //Time taken until bird flys away
+    protected float timeOnScreen = 1; //Time on screen to calculate score
 
     protected DuckAnimController duckAnim; //Could use events but it is on same object so will just used get component method
 
@@ -30,17 +31,13 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
     // Start is called before the first frame update
     protected void Start()
     {
-        duckAnim = GetComponent<DuckAnimController>(); //Get script which handles animations so we can set anim triggers
-    }
-
-    //Called when pool is filled as we want to add this as player observer, but is being set to inactive so failing to register as observer1
-    public void Innit()
-    {
         AddObservers();
         BroadCastManager.Instance.AddPlayerObserver(this); //Due to the pooling manager this is only done once on game scene start :)
         flyDuckAway += ManuallyFlyDuckAway;
 
         BroadCastManager.Instance.DuckFlyingAway.AddListener(flyDuckAway);
+        duckAnim = GetComponent<DuckAnimController>(); //Get script which handles animations so we can set anim triggers
+       
     }
 
     protected void OnEnable()
@@ -82,6 +79,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 
     protected void CalculateRotation()
     {
+        //Calculate rotation based off the new position, could increment with duck speed to make even better
         direction = (nextPosition - transform.position).normalized;
         if (direction != Vector3.zero)
         {
@@ -94,6 +92,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
     {
         if (shouldGetPosition)
         {
+            //Calculate random postion to fly to
             nextPosition = new(Maths.GetRandomPosition3D().X, Maths.GetRandomPosition3D().Y, Maths.GetRandomPosition3D().Z);
         }
     }
@@ -139,7 +138,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 
             yield return new WaitForSeconds(0.1f);
             duckAnim.SetAnimState(DuckAnimState.FALLING); //Set duck death animation to trigger
-            transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.y, 0);
+            transform.rotation = new Quaternion(transform.rotation.x, 180, transform.rotation.y, 0); 
             movementSpeed = 8;
             shouldGetPosition = false;
 
@@ -153,7 +152,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
         }
         else
         {
-            //Rocket ship to mars :P
+            //Get random position to fly bird off screen and set flag to false so it can't get a new position
             nextPosition = new(Maths.GetDespawnPosition().X, Maths.GetDespawnPosition().Y, Maths.GetDespawnPosition().Z);
             shouldGetPosition = false; ///Just to make sure it does not get another position before despawn
             movementSpeed = movementSpeed += 5;
@@ -187,6 +186,7 @@ public class Duck : MonoBehaviour, IPlayerObserver, IDuckSubject
 
     public void RemoveObservers()
     {
+        if(DuckObservers != null) //Gc was getting to it before this script after creating build assemblies, as I am using ref to broadcast manager list
         DuckObservers.Clear();
     }
 

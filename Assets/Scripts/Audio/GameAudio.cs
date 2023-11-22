@@ -8,7 +8,7 @@ using FMODUnity;
 /*Not going to do much audio as it is just a last implementation after all the game design and programming is done. Just to bring the game together
   Will be mostly 2D one shots with no params and just pitch modulation*/
 
-public class GameSceneAudio : MonoBehaviour, IPlayerObserver, IRoundObserver
+public class GameAudio : MonoBehaviour, IPlayerObserver, IRoundObserver
 {
     [SerializeField] private EventReference gameStartReference;
     [SerializeField] private EventReference gunshotReference;
@@ -46,5 +46,5 @@ public class GameSceneAudio : MonoBehaviour, IPlayerObserver, IRoundObserver
         AudioPlayback.PlayOneShot(newRoundReference, null);
     }
 
-    
+
 }

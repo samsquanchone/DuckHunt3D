@@ -114,7 +114,6 @@ public class DuckCountUI : MonoBehaviour, IRoundObserver, IPlayerObserver
         
     }
    
-
     IEnumerator RoundInterimFlash()
     {
         while (isRoundInterim)
@@ -163,7 +162,7 @@ public class DuckCountUI : MonoBehaviour, IRoundObserver, IPlayerObserver
                 ResetDuckCount();
                 break;
 
-            case RoundState.BIRDFLYAWAY:
+            case RoundState.DUCKFLYAWAY:
                 DuckMissed();
                 break;
 
