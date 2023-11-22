@@ -1,33 +1,37 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
+using Data.Persistent;
+using Data.Objects;
+using UI.LeaderBoards.ScoreInstantiation;
 
-public class ScoreHandler : MonoBehaviour
+namespace UI.LeaderBoards.ScoreBoard
 {
-    //Get reference to the score prefab
-    [SerializeField] private GameObject scoreUIObject;
-    [SerializeField] private GameObject scoreUIParentContainer;
 
-    //As the entry into the leaderboards can be seperated (thanks to composition), if enabaling the scoreboard object the entry would have been added / no new high score!
-    private void OnEnable()
+    public class ScoreHandler : MonoBehaviour
     {
-        CreateScoreBoard();
-    }
+        //Get reference to the score prefab
+        [SerializeField] private GameObject scoreUIObject;
+        [SerializeField] private GameObject scoreUIParentContainer;
 
-    public void CreateScoreBoard()
-    {
-        List<PlayerScore> leaderBoards = PersistentData.GetHighScores();
-        
-        //Instantiate the amount of scoreUIs as is in the scores container and set the scores (Vertical layout group and content fitter will handle the rest :))
-        foreach (var score in PersistentData.GetHighScores())
+        //As the entry into the leaderboards can be seperated (thanks to composition), if enabaling the scoreboard object the entry would have been added / no new high score!
+        private void OnEnable()
         {
-            GameObject _obj = Instantiate(scoreUIObject, scoreUIParentContainer.transform);
-
-            _obj.GetComponent<ScoreEntry>().SetUIValues(score);
-
+            CreateScoreBoard();
         }
 
-        
-  
+        public void CreateScoreBoard()
+        {
+            List<PlayerScore> leaderBoards = PersistentData.GetHighScores();
+
+            //Instantiate the amount of scoreUIs as is in the scores container and set the scores (Vertical layout group and content fitter will handle the rest :))
+            foreach (var score in PersistentData.GetHighScores())
+            {
+                GameObject _obj = Instantiate(scoreUIObject, scoreUIParentContainer.transform);
+
+                _obj.GetComponent<ScoreEntry>().SetUIValues(score);
+
+            }
+        }
     }
 }

@@ -3,86 +3,90 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Utility.Broadcast;
 
-public class DucksNeededUI : MonoBehaviour, IRoundObserver
+namespace UI.GamePlay.DucksNeeded
 {
-
-    //private TMP_Text duckNeededText;
-    [SerializeField] GameObject barsContainer;
-
-    [SerializeField] GameObject barGroupUIPrefab; //Roughly about one ducks worth of bars 
-    List<GameObject> barsObjectList = new();
-
-    Color alphaColour;
-
-    int duckNeeded = 6;
-
-    private void Start()
+    public class DucksNeededUI : MonoBehaviour, IRoundObserver
     {
-        BroadCastManager.Instance.AddRoundObserver(this);
-        alphaColour = barGroupUIPrefab.GetComponentInChildren<Image>().color;
-        alphaColour.a = 0;
-        for (int i = 0; i < 10; i++)
+
+        //private TMP_Text duckNeededText;
+        [SerializeField] GameObject barsContainer;
+
+        [SerializeField] GameObject barGroupUIPrefab; //Roughly about one ducks worth of bars 
+        List<GameObject> barsObjectList = new();
+
+        Color alphaColour;
+
+        int duckNeeded = 6;
+
+        private void Start()
         {
-            GameObject _obj = Instantiate(barGroupUIPrefab, barsContainer.transform);
-            barsObjectList.Add(_obj);
-            if (i > 5)
+            BroadCastManager.Instance.AddRoundObserver(this);
+            alphaColour = barGroupUIPrefab.GetComponentInChildren<Image>().color;
+            alphaColour.a = 0;
+            for (int i = 0; i < 10; i++)
             {
-                Image[] bars = _obj.GetComponentsInChildren<Image>();
-                foreach (var bar in bars)
+                GameObject _obj = Instantiate(barGroupUIPrefab, barsContainer.transform);
+                barsObjectList.Add(_obj);
+                if (i > 5)
                 {
-                    bar.color = alphaColour;
+                    Image[] bars = _obj.GetComponentsInChildren<Image>();
+                    foreach (var bar in bars)
+                    {
+                        bar.color = alphaColour;
+                    }
                 }
             }
+
+            alphaColour.a = 1; //Reset alpha to 1 here as we will only be 'adding bars' not removing them, so this avoids having to re-assign
         }
 
-        alphaColour.a = 1; //Reset alpha to 1 here as we will only be 'adding bars' not removing them, so this avoids having to re-assign
-    }
 
-
-    public void IncrementDucksNeeded()
-    {
-        duckNeeded += 1;
-
-        //Potential issue with 9th bird, may be one out with duck needed, need to test to double check!
-        Image[] bars = barsObjectList[duckNeeded - 1].GetComponentsInChildren<Image>();
-        foreach (var bar in bars)
+        public void IncrementDucksNeeded()
         {
-            bar.color = alphaColour;
+            duckNeeded += 1;
+
+            //Potential issue with 9th bird, may be one out with duck needed, need to test to double check!
+            Image[] bars = barsObjectList[duckNeeded - 1].GetComponentsInChildren<Image>();
+            foreach (var bar in bars)
+            {
+                bar.color = alphaColour;
+            }
+
+            StartCoroutine("FlashBarGroup"); //Flash new bar group that appears
         }
 
-        StartCoroutine("FlashBarGroup"); //Flash new bar group that appears
-    }
-
-    IEnumerator FlashBarGroup()
-    {
-
-        yield return new WaitForSeconds(0.5f);
-        alphaColour.a = 0;
-        Image[] bars = barsObjectList[duckNeeded - 1].GetComponentsInChildren<Image>();
-        foreach (var bar in bars)
+        IEnumerator FlashBarGroup()
         {
-            bar.color = alphaColour;
+
+            yield return new WaitForSeconds(0.5f);
+            alphaColour.a = 0;
+            Image[] bars = barsObjectList[duckNeeded - 1].GetComponentsInChildren<Image>();
+            foreach (var bar in bars)
+            {
+                bar.color = alphaColour;
+            }
+
+            yield return new WaitForSeconds(0.5f);
+            alphaColour.a = 1;
+
+            foreach (var bar in bars)
+            {
+                bar.color = alphaColour;
+            }
+
         }
 
-        yield return new WaitForSeconds(0.5f);
-        alphaColour.a = 1;
-
-        foreach (var bar in bars)
+        void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
         {
-            bar.color = alphaColour;
-        }
-
-    }
-
-    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
-    {
-        switch (state)
-        {
+            switch (state)
+            {
                 case RoundState.DUCKSNEEDEDINCREASED:
-                IncrementDucksNeeded();
-                break;
+                    IncrementDucksNeeded();
+                    break;
 
+            }
         }
     }
 }

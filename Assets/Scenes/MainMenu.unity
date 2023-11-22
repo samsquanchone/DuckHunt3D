@@ -504,7 +504,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1220,6 +1220,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 52315358}
     m_Modifications:
+    - target: {fileID: 130841998888980131, guid: 984ffaa79709cab4e81ff6e4fb019818,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 2768635599928441764, guid: 984ffaa79709cab4e81ff6e4fb019818,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1329,6 +1334,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HowToPlayButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994028352455260387, guid: 984ffaa79709cab4e81ff6e4fb019818,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

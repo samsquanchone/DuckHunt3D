@@ -1,42 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.SceneManagement;
+using GamePlay.Manager;
 
-public class GameMenu : MonoBehaviour
+namespace UI.GamePlay.Menu
 {
-    [SerializeField] private Button resumeButton;
-    [SerializeField] private Button mainMenuButton;
-    [SerializeField] private Button howToPlayButton;
-    [SerializeField] private Button quitButton;
-    // Start is called before the first frame update
-    void Start()
-    {
-        resumeButton.onClick.AddListener(ResumeButtonPressed);
-        mainMenuButton.onClick.AddListener(MainMenuButtonPressed);
-        howToPlayButton.onClick.AddListener(HowToPlayButtonPressed);
-        quitButton.onClick.AddListener(QuitButtonPressed);
-        
-    }
 
-    void ResumeButtonPressed()
+    public class GameMenu : MonoBehaviour
     {
-        GameManager.Instance.GameResumed();
-        gameObject.SetActive(false);
-    }
+        [SerializeField] private Button resumeButton;
+        [SerializeField] private Button mainMenuButton;
+        [SerializeField] private Button quitButton;
+        // Start is called before the first frame update
+        void Start()
+        {
+            resumeButton.onClick.AddListener(ResumeButtonPressed);
+            mainMenuButton.onClick.AddListener(MainMenuButtonPressed);
+            quitButton.onClick.AddListener(QuitButtonPressed);
+        }
 
-    void MainMenuButtonPressed()
-    {
-        SceneManager.Instance.TransationToScene(0);
-    }
+        void ResumeButtonPressed()
+        {
+            GameManager.Instance.GameResumed();
+            gameObject.SetActive(false);
+        }
 
-    void HowToPlayButtonPressed()
-    {
-        
-    }
+        void MainMenuButtonPressed()
+        {
+            SceneManager.Instance.TransationToScene(0);
+        }
 
-    void QuitButtonPressed()
-    {
-        Application.Quit();
+        void QuitButtonPressed()
+        {
+            Application.Quit();
+        }
     }
 }

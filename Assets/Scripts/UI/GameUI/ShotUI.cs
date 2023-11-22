@@ -1,35 +1,38 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Broadcast;
 
-public class ShotUI : MonoBehaviour, IPlayerObserver
+namespace UI.GamePlay.Shot
 {
-    private Image blackScreen;
-    Color alphaColour;
-
-    void Start()
+    public class ShotUI : MonoBehaviour, IPlayerObserver
     {
-        BroadCastManager.Instance.AddPlayerObserver(this);
-        blackScreen = GetComponent<Image>();
-        alphaColour = blackScreen.color;
+        private Image blackScreen;
+        Color alphaColour;
 
-    }
+        void Start()
+        {
+            BroadCastManager.Instance.AddPlayerObserver(this);
+            blackScreen = GetComponent<Image>();
+            alphaColour = blackScreen.color;
 
-    void IPlayerObserver.OnNotify(PlayerState state)
-    {
-        StartCoroutine(FlashScreenBlack());
-    }
+        }
 
-    IEnumerator FlashScreenBlack()
-    {
-        alphaColour.a = 1;
-        blackScreen.color = alphaColour;
+        void IPlayerObserver.OnNotify(PlayerState state)
+        {
+            StartCoroutine(FlashScreenBlack());
+        }
 
-        yield return new WaitForSecondsRealtime(0.05f);
+        IEnumerator FlashScreenBlack()
+        {
+            alphaColour.a = 1;
+            blackScreen.color = alphaColour;
 
-        alphaColour.a = 0;
-        blackScreen.color = alphaColour;
+            yield return new WaitForSecondsRealtime(0.05f);
 
+            alphaColour.a = 0;
+            blackScreen.color = alphaColour;
+
+        }
     }
 }

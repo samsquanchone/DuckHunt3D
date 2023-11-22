@@ -1,53 +1,57 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.Broadcast;
 
-public class FlyAwayUI : MonoBehaviour
+namespace UI.GamePlay.DuckFlyAway
 {
-    [SerializeField] private GameObject flyAwayUIObject;
-    //Showing another way to do similar design as interface based observer pattern I have done for other classes
-    UnityAction flashFlyAwayUI;
-    UnityAction stopFlashingFlyAwayUI;
 
-    bool hasDuckFlewAway = false;
-    //Need Duck state is flying away start flashing, has flown away then stop flashing
-
-    // Start is called before the first frame update
-    void Start()
+    public class FlyAwayUI : MonoBehaviour
     {
-        //Create actions
-        flashFlyAwayUI += ShowDuckFlyAwayUI;
-        stopFlashingFlyAwayUI += DisableDuckFlyAwayUI;
+        [SerializeField] private GameObject flyAwayUIObject;
+        //Showing another way to do similar design as interface based observer pattern I have done for other classes
+        UnityAction flashFlyAwayUI;
+        UnityAction stopFlashingFlyAwayUI;
 
-        //Add as listeners to their respective event!
-        BroadCastManager.Instance.DuckFlyingAway.AddListener(flashFlyAwayUI);
-        BroadCastManager.Instance.DuckFlownAway.AddListener(stopFlashingFlyAwayUI);
-    }
+        bool hasDuckFlewAway = false;
+        //Need Duck state is flying away start flashing, has flown away then stop flashing
 
-    public void ShowDuckFlyAwayUI()
-    {
-        hasDuckFlewAway = false;
-        flyAwayUIObject.SetActive(true);
-        StartCoroutine(FlashUI());
-    }
-
-    public void DisableDuckFlyAwayUI()
-    {
-        hasDuckFlewAway = true;
-    }
-
-    IEnumerator FlashUI()
-    {
-        while (!hasDuckFlewAway)
+        // Start is called before the first frame update
+        void Start()
         {
-            flyAwayUIObject.SetActive(false);
-            yield return new WaitForSeconds(0.2f);
+            //Create actions
+            flashFlyAwayUI += ShowDuckFlyAwayUI;
+            stopFlashingFlyAwayUI += DisableDuckFlyAwayUI;
 
-
-            flyAwayUIObject.SetActive(true);
-            yield return new WaitForSeconds(0.2f);
+            //Add as listeners to their respective event!
+            BroadCastManager.Instance.DuckFlyingAway.AddListener(flashFlyAwayUI);
+            BroadCastManager.Instance.DuckFlownAway.AddListener(stopFlashingFlyAwayUI);
         }
-        flyAwayUIObject.SetActive(false);
+
+        public void ShowDuckFlyAwayUI()
+        {
+            hasDuckFlewAway = false;
+            flyAwayUIObject.SetActive(true);
+            StartCoroutine(FlashUI());
+        }
+
+        public void DisableDuckFlyAwayUI()
+        {
+            hasDuckFlewAway = true;
+        }
+
+        IEnumerator FlashUI()
+        {
+            while (!hasDuckFlewAway)
+            {
+                flyAwayUIObject.SetActive(false);
+                yield return new WaitForSeconds(0.2f);
+
+
+                flyAwayUIObject.SetActive(true);
+                yield return new WaitForSeconds(0.2f);
+            }
+            flyAwayUIObject.SetActive(false);
+        }
     }
 }

@@ -1,28 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility.Broadcast;
 
-
-public class GameOverUI : MonoBehaviour, IRoundObserver
+namespace UI.GamePlay.GameOver
 {
+    public class GameOverUI : MonoBehaviour, IRoundObserver
+    {
 
-    [SerializeField] private GameObject GameOverUIObject;
-    void Start()
-    {
-        BroadCastManager.Instance.AddRoundObserver(this);
-    }
-
-    void ShowGameOverUI()
-    {
-        GameOverUIObject.SetActive(true);
-    }
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
-    {
-        switch (state)
+        [SerializeField] private GameObject GameOverUIObject;
+        void Start()
         {
-            case RoundState.GAMEOVER:
-                ShowGameOverUI();
-                break;
+            BroadCastManager.Instance.AddRoundObserver(this);
+        }
+
+        void ShowGameOverUI()
+        {
+            GameOverUIObject.SetActive(true);
+        }
+        public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+        {
+            switch (state)
+            {
+                case RoundState.GAMEOVER:
+                    ShowGameOverUI();
+                    break;
+            }
         }
     }
 }

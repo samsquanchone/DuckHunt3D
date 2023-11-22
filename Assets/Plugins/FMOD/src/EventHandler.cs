@@ -82,7 +82,7 @@ namespace FMODUnity
             HandleGameEvent(EmitterGameEvent.CollisionExit2D);
         }
 
-        /*
+        
         private void OnMouseEnter()
         {
             HandleGameEvent(EmitterGameEvent.MouseEnter);
@@ -102,7 +102,7 @@ namespace FMODUnity
         {
             HandleGameEvent(EmitterGameEvent.MouseUp);
         }
-        */
+        
 
         protected abstract void HandleGameEvent(EmitterGameEvent gameEvent);
     }

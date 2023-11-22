@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using Utility.Math;
+using Utility.Broadcast;
+using Entity.Duck;
 
 public class RareDuck :  Duck, IPlayerObserver, IDuckSubject
 {
