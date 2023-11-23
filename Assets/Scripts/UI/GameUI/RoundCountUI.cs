@@ -2,33 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Utility.Broadcast;
 
-public class RoundCountUI : MonoBehaviour, IRoundObserver
+namespace UI.GamePlay.RoundCount
 {
-    [SerializeField] private TMP_Text roundText;
-    const string prefix = "R = ";
-    
-
-    private void Start()
+    public class RoundCountUI : MonoBehaviour, IRoundObserver
     {
-        BroadCastManager.Instance.AddRoundObserver(this);
-        roundText.SetText(prefix + 1);
-    }
+        [SerializeField] private TMP_Text roundText;
+        const string prefix = "R = ";
 
-    public void IncrementRound(int round)
-    {
-        roundText.SetText(prefix + round);
-    }
 
-    void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
-    {
-        switch (state)
+        private void Start()
         {
-            
-            case RoundState.NEWROUND:
-                IncrementRound(_currentRound);
-                break;
-            
+            BroadCastManager.Instance.AddRoundObserver(this);
+            roundText.SetText(prefix + 1);
+        }
+
+        public void IncrementRound(int round)
+        {
+            roundText.SetText(prefix + round);
+        }
+
+        void IRoundObserver.OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+        {
+            switch (state)
+            {
+
+                case RoundState.NEW_ROUND:
+                    IncrementRound(_currentRound);
+                    break;
+
+            }
         }
     }
 }

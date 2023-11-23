@@ -2,57 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Utility.Broadcast;
 
-public class RoundInterimUI : MonoBehaviour, IRoundObserver
+namespace UI.GamePlay.RoundInterim
 {
-    [SerializeField] private GameObject roundCountObject;
-    private TMP_Text roundText;
-    const string roundTextPrefix = "Round\n";
-
-    [SerializeField] private GameObject perfectRoundObject;
-    
-    private void Start()
+    public class RoundInterimUI : MonoBehaviour, IRoundObserver
     {
-        BroadCastManager.Instance.AddRoundObserver(this);
-        roundText = roundCountObject.GetComponentInChildren<TMP_Text>(); //Get text reference
-    }
+        [SerializeField] private GameObject roundCountObject;
+        private TMP_Text roundText;
+        const string roundTextPrefix = "Round\n";
 
-    void SetRoundText(int round)
-    {
-        roundText.text = roundTextPrefix + round;
-        roundCountObject.SetActive(true);
-    }
+        [SerializeField] private GameObject perfectRoundObject;
 
-    void DisableRoundText()
-    {
-        roundCountObject.SetActive(false);
-    }
-
-    void ActivatePerfectRoundText(bool isPerfectRound)
-    {
-        if(isPerfectRound)
-        perfectRoundObject.SetActive(true);
-    }
-
-    void DisablePerfectRoundText()
-    {
-        perfectRoundObject.SetActive(false);
-    }
-
-    public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
-    {
-        switch (state)
+        private void Start()
         {
-            case RoundState.NEWROUND:
-                SetRoundText(_currentRound);
-                DisablePerfectRoundText();
-                break;
-            case RoundState.DUCKACTIVE:
-                DisableRoundText();
-                break;
-            case RoundState.ROUNDINTERIM:
-                ActivatePerfectRoundText(_isPerfectRound);
-                break;
+            BroadCastManager.Instance.AddRoundObserver(this);
+            roundText = roundCountObject.GetComponentInChildren<TMP_Text>(); //Get text reference
+        }
+
+        void SetRoundText(int round)
+        {
+            roundText.text = roundTextPrefix + round;
+            roundCountObject.SetActive(true);
+        }
+
+        void DisableRoundText()
+        {
+            roundCountObject.SetActive(false);
+        }
+
+        void ActivatePerfectRoundText(bool isPerfectRound)
+        {
+            if (isPerfectRound)
+                perfectRoundObject.SetActive(true);
+        }
+
+        void DisablePerfectRoundText()
+        {
+            perfectRoundObject.SetActive(false);
+        }
+
+        public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
+        {
+            switch (state)
+            {
+                case RoundState.NEW_ROUND:
+                    SetRoundText(_currentRound);
+                    DisablePerfectRoundText();
+                    break;
+                case RoundState.DUCK_ACTIVE:
+                    DisableRoundText();
+                    break;
+                case RoundState.ROUND_INTERIM:
+                    ActivatePerfectRoundText(_isPerfectRound);
+                    break;
+            }
         }
     }
 }

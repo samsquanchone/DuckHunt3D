@@ -1,0 +1,20 @@
+{
+    "name": "Utility",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7ebaaae40c997354095abd0bdaee1ee9"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Entity",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a569dcf976aeeef4e9b1bbb6a530c936",
+        "GUID:2db96561c4a2ac943b103feef614101f",
+        "GUID:cf2786b1856e85749896bb076e9b94ed"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
