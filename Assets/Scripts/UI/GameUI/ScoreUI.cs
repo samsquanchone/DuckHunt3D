@@ -68,10 +68,10 @@ namespace UI.GamePlay.Score
         {
             switch (state)
             {
-                case RoundState.GAMEOVER:
+                case RoundState.GAME_OVER:
                     SetFinalScore(_currentRound); //Set final values 
                     break;
-                case RoundState.ROUNDINTERIM:
+                case RoundState.ROUND_INTERIM:
                     if (_isPerfectRound) { SetScore(1000); } //Set perfect round bonus to score
                     break;
 

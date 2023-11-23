@@ -153,24 +153,24 @@ namespace UI.GamePlay.DuckCount
         {
             switch (state)
             {
-                case RoundState.DUCKSPAWNINTERIM:
+                case RoundState.DUCK_SPAWN_INTERIM:
 
                     break;
 
-                case RoundState.DUCKSPAWNING:
+                case RoundState.DUCK_SPAWNING:
                     NewDuckSpawning();
                     break;
 
-                case RoundState.NEWROUND:
+                case RoundState.NEW_ROUND:
                     isRoundInterim = false;
                     ResetDuckCount();
                     break;
 
-                case RoundState.DUCKFLYAWAY:
+                case RoundState.DUCK_FLY_AWAY:
                     DuckMissed();
                     break;
 
-                case RoundState.ROUNDINTERIM:
+                case RoundState.ROUND_INTERIM:
                     isRoundInterim = true;
                     StartCoroutine(RoundInterimFlash());
                     break;

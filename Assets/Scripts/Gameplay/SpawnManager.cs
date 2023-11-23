@@ -80,7 +80,7 @@ namespace GamePlay.Spawn
         {
             switch (state)
             {
-                case RoundState.DUCKSPAWNING:
+                case RoundState.DUCK_SPAWNING:
                     SpawnBird();
                     break;
             }

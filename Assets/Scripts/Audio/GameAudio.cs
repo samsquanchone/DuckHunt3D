@@ -33,7 +33,7 @@ namespace Audio.GamePlay
         {
             switch (state)
             {
-                case RoundState.ROUNDINTERIM:
+                case RoundState.ROUND_INTERIM:
                     PlayNewRoundAudio();
                     break;
             }

@@ -23,8 +23,8 @@ namespace UI.MainMenu
             //Check a save file exists before innit the save data
             if (JSONManager.CheckIfSaveExits())
             {
-                PlayerScore highScore = PersistentData.GetHighScores()[0];
-                highScoreText.SetText(highScoreTextPrefix + highScore.playeName + ": " + highScore.score);
+                PlayerScore HighScore = PersistentData.GetHighScores()[0];
+                highScoreText.SetText(highScoreTextPrefix + HighScore.playeName + ": " + HighScore.score);
             }
 
             //Wont use the Audio.Playback namespace as it releases events from mmory and this is looping so wan't to release it at a certain time

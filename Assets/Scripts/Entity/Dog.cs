@@ -75,7 +75,7 @@ namespace Entity.Dog
         {
             switch (state)
             {
-                case RoundState.ROUNDINTERIM:
+                case RoundState.ROUND_INTERIM:
                     RunDogAcrossScreen();
                     break;
             }

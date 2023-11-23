@@ -39,7 +39,7 @@ namespace Gameplay.Round
         IEnumerator StartRoundTimer()
         {
             yield return new WaitForSeconds(0.5f);
-            NotifyObservers(RoundState.NEWROUND, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.NEW_ROUND, round, birdsNeeded, isPerfectRound);
 
             yield return new WaitForSeconds(0.5f);
             CheckCount(); // bird cout will be 0 so it will spawn a bird, removing the need to re-type the call to the spawn manager! 
@@ -48,7 +48,7 @@ namespace Gameplay.Round
 
         public void BirdHit()
         {
-            NotifyObservers(RoundState.DUCKNOTACTIVE, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.DUCK_NOT_ACTIVE, round, birdsNeeded, isPerfectRound);
             shots -= 1;
             birdsHit += 1;
         }
@@ -61,7 +61,7 @@ namespace Gameplay.Round
 
         public void BirdTimedOUt()
         {
-            NotifyObservers(RoundState.DUCKFLYAWAY, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.DUCK_FLY_AWAY, round, birdsNeeded, isPerfectRound);
             CheckCount();
         }
 
@@ -83,7 +83,7 @@ namespace Gameplay.Round
             if (shots == 0)
             {
                 BroadCastManager.Instance.DuckFlyingAway.Invoke();
-                NotifyObservers(RoundState.DUCKNOTACTIVE, round, birdsNeeded, isPerfectRound);
+                NotifyObservers(RoundState.DUCK_NOT_ACTIVE, round, birdsNeeded, isPerfectRound);
                 //NotifyObservers(RoundState.BIRDFLYAWAY, round, birdsNeeded, isPerfectRound);
                 ResetAmmo();
             }
@@ -103,7 +103,7 @@ namespace Gameplay.Round
             }
             else
             {
-                NotifyObservers(RoundState.GAMEOVER, round, birdsNeeded, isPerfectRound);
+                NotifyObservers(RoundState.GAME_OVER, round, birdsNeeded, isPerfectRound);
                 GameManager.Instance.GameOver();
             }
         }
@@ -114,7 +114,7 @@ namespace Gameplay.Round
             birdsHit = 0;
             birdCount = 0;
             round += 1;
-            NotifyObservers(RoundState.NEWROUND, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.NEW_ROUND, round, birdsNeeded, isPerfectRound);
             ResetAmmo();
             GameManager.Instance.IncrementRound();
             CheckDucksNeededIncrement();
@@ -128,7 +128,7 @@ namespace Gameplay.Round
                 if (round % 3 == 0) //Would do it like duck hunter (11,13,15,20) but I like this approach (even if it is off from OG duckhunt by one round)
                 {
                     birdsNeeded += 1;
-                    NotifyObservers(RoundState.DUCKSNEEDEDINCREASED, round, birdsNeeded, isPerfectRound);
+                    NotifyObservers(RoundState.DUCKS_NEEDED_INCREASED, round, birdsNeeded, isPerfectRound);
                 }
         }
         void IsPerfectRound()
@@ -147,14 +147,14 @@ namespace Gameplay.Round
         {
             yield return new WaitForSeconds(1);
             ResetAmmo();
-            NotifyObservers(RoundState.DUCKSPAWNING, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.DUCK_SPAWNING, round, birdsNeeded, isPerfectRound);
             birdCount += 1;
-            NotifyObservers(RoundState.DUCKACTIVE, round, birdsNeeded, isPerfectRound); //Will be used as flag by player
+            NotifyObservers(RoundState.DUCK_ACTIVE, round, birdsNeeded, isPerfectRound); //Will be used as flag by player
         }
 
         IEnumerator RoundInterim()
         {
-            NotifyObservers(RoundState.ROUNDINTERIM, round, birdsNeeded, isPerfectRound);
+            NotifyObservers(RoundState.ROUND_INTERIM, round, birdsNeeded, isPerfectRound);
             yield return new WaitForSeconds(3.5f);
             NewRound();
         }

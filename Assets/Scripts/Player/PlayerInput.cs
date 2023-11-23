@@ -31,7 +31,7 @@ namespace Player.Control
         void PlayerShoot()
         {
             //shoot if duck is active and gam is not paused 
-            if (roundState == RoundState.DUCKACTIVE && Time.timeScale != 0)
+            if (roundState == RoundState.DUCK_ACTIVE && Time.timeScale != 0)
             {
                 // Construct a ray from the current touch coordinates
                 Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);

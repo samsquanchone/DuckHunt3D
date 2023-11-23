@@ -36,7 +36,7 @@ namespace Utility.Broadcast
     #endregion
 
     #region Round
-    public enum RoundState { DUCKFLYAWAY, GAMEOVER, NEWROUND, DUCKSPAWNINTERIM, DUCKSPAWNING, DUCKSNEEDEDINCREASED, DUCKACTIVE, ROUNDINTERIM, DUCKNOTACTIVE };
+    public enum RoundState { DUCK_FLY_AWAY, GAME_OVER, NEW_ROUND, DUCK_SPAWN_INTERIM, DUCK_SPAWNING, DUCKS_NEEDED_INCREASED, DUCK_ACTIVE, ROUND_INTERIM, DUCK_NOT_ACTIVE };
     public interface IRoundSubject
     {
         List<IRoundObserver> RoundObservers { get; set; }

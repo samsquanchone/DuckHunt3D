@@ -8,7 +8,7 @@ namespace UI.GamePlay.GameOver
     public class GameOverUI : MonoBehaviour, IRoundObserver
     {
 
-        [SerializeField] private GameObject GameOverUIObject;
+        [SerializeField] private GameObject gameOverUIObject;
         void Start()
         {
             BroadCastManager.Instance.AddRoundObserver(this);
@@ -16,13 +16,13 @@ namespace UI.GamePlay.GameOver
 
         void ShowGameOverUI()
         {
-            GameOverUIObject.SetActive(true);
+            gameOverUIObject.SetActive(true);
         }
         public void OnNotify(RoundState state, int _currentRound, int _birdsNeeded, bool _isPerfectRound)
         {
             switch (state)
             {
-                case RoundState.GAMEOVER:
+                case RoundState.GAME_OVER:
                     ShowGameOverUI();
                     break;
             }

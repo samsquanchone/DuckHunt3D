@@ -46,14 +46,14 @@ namespace UI.GamePlay.RoundInterim
         {
             switch (state)
             {
-                case RoundState.NEWROUND:
+                case RoundState.NEW_ROUND:
                     SetRoundText(_currentRound);
                     DisablePerfectRoundText();
                     break;
-                case RoundState.DUCKACTIVE:
+                case RoundState.DUCK_ACTIVE:
                     DisableRoundText();
                     break;
-                case RoundState.ROUNDINTERIM:
+                case RoundState.ROUND_INTERIM:
                     ActivatePerfectRoundText(_isPerfectRound);
                     break;
             }

@@ -82,7 +82,7 @@ namespace UI.GamePlay.DucksNeeded
         {
             switch (state)
             {
-                case RoundState.DUCKSNEEDEDINCREASED:
+                case RoundState.DUCKS_NEEDED_INCREASED:
                     IncrementDucksNeeded();
                     break;
 

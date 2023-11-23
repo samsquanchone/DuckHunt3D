@@ -42,11 +42,11 @@ namespace UI.LeaderBoards.NameInput
         {
 
             //Create new score
-            PlayerScore newScore = new();
-            newScore.playeName = nameInput.text;
-            newScore.score = PersistentData.GetGameFinishedStats().Item1;
-            newScore.round = PersistentData.GetGameFinishedStats().Item2;
-            PersistentData.AddAndSortHighScores(newScore);
+            PlayerScore NewScore = new();
+            NewScore.playeName = nameInput.text;
+            NewScore.score = PersistentData.GetGameFinishedStats().Item1;
+            NewScore.round = PersistentData.GetGameFinishedStats().Item2;
+            PersistentData.AddAndSortHighScores(NewScore);
 
             //Activate leaderboards
             ActivateLeaderBoards();

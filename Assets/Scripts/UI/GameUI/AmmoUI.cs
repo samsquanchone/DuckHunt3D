@@ -57,11 +57,11 @@ namespace UI.GamePlay.Ammo
             switch (state)
             {
 
-                case RoundState.DUCKSPAWNING:
+                case RoundState.DUCK_SPAWNING:
                     ResetAmmo();
                     break;
 
-                case RoundState.NEWROUND:
+                case RoundState.NEW_ROUND:
                     ResetAmmo();
                     break;
 

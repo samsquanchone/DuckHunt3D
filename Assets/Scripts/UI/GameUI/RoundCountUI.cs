@@ -28,7 +28,7 @@ namespace UI.GamePlay.RoundCount
             switch (state)
             {
 
-                case RoundState.NEWROUND:
+                case RoundState.NEW_ROUND:
                     IncrementRound(_currentRound);
                     break;
 
