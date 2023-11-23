@@ -3195,6 +3195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 905717055}
+  - component: {fileID: 905717056}
   m_Layer: 0
   m_Name: GameplayUI
   m_TagString: Untagged
@@ -3221,6 +3222,19 @@ Transform:
   - {fileID: 1734526556}
   m_Father: {fileID: 1329220275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &905717056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905717054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 100717e9c63c63444b6fbc179ad702a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverUIObject: {fileID: 1734526555}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -4182,7 +4196,6 @@ GameObject:
   - component: {fileID: 1329220274}
   - component: {fileID: 1329220273}
   - component: {fileID: 1329220272}
-  - component: {fileID: 1329220276}
   m_Layer: 5
   m_Name: UICanvas
   m_TagString: Untagged
@@ -4275,19 +4288,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1329220276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1329220271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 100717e9c63c63444b6fbc179ad702a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameOverUIObject: {fileID: 1734526555}
 --- !u!114 &1347262299 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6063281248656968035, guid: faae50ee3688d9a46ad438d5cfb50a86,
